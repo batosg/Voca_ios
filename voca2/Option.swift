@@ -18,14 +18,13 @@ struct optionView: View {
     @Binding var theText: String
     @Binding var playvol: Float
     @Binding var panel: Int
-    // scanTimerのインスタンスを作り観測する
-    @ObservedObject var scan = scanTimer()
-    //初期化ボタンのため phraseSet1を定義する
-    @Binding var phraseSet1: [String] 
+    @Binding var arrnum: Int
+    @Binding var phraseSet1: [String]
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-    
+    // scanTimerのインスタンスを作り観測する
+    @ObservedObject var scan = scanTimer()
     var body: some View {
         
         ZStack {
@@ -79,6 +78,9 @@ struct optionView: View {
                             ForEach(0..<4) { index in
                                 Button(action: {
                                     print("\(phraseSet1[index]) ")
+                                    panel=0
+                                    screen="record"
+                                    arrnum=index
                                 }) {
                                     if(index < phraseSet1.count){
                                         Text("\(phraseSet1[index]) ")
@@ -95,7 +97,9 @@ struct optionView: View {
                             ForEach(4..<9) { index in
                                 Button(action: {
                                     print("\(phraseSet1[index]) ")
-                                    
+                                    panel=0
+                                    screen="record"
+                                    arrnum=index
                                 }) {
                                     if(index < phraseSet1.count){
                                         Text("\(phraseSet1[index]) ")
@@ -112,7 +116,9 @@ struct optionView: View {
                             ForEach(9..<14) { index in
                                 Button(action: {
                                     print("\(phraseSet1[index]) ")
-                                    
+                                    panel=0
+                                    screen="record"
+                                    arrnum=index
                                 }) {
                                     if(index < phraseSet1.count){
                                         Text("\(phraseSet1[index]) ")
@@ -129,6 +135,9 @@ struct optionView: View {
                             ForEach(14..<18) { index in
                                 Button(action: {
                                     print("\(phraseSet1[index]) ")
+                                    panel=0
+                                    screen="record"
+                                    arrnum=index
                                     
                                 }) {
                                     if(index < phraseSet1.count){

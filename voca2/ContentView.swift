@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var currentText = ""
     @State var masterVolume: Float = 1.0
     @State var panelnum: Int = 0
+    @State var arrnum: Int = 0
    
     @State private var phraseSet1: [String] = ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
     @State public var phraseSet6: [String] = ["ZZZZZZ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
@@ -34,15 +35,15 @@ struct ContentView: View {
         } else if (currentScreen == "dakuKata") {
             dakuKataView(screen: $currentScreen, theText: $currentText, playvol: $masterVolume)
         } else if (currentScreen == "option") {
-            optionView(screen: $currentScreen, theText: $currentText, playvol: $masterVolume,panel:$panelnum,phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
+            optionView(screen: $currentScreen, theText: $currentText, playvol: $masterVolume,panel:$panelnum,arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         } else if (currentScreen == "record") {
-            recordView(screen: $currentScreen, theText: $currentText, playvol: $masterVolume,panel:$panelnum,phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
+            recordView(screen: $currentScreen, theText: $currentText, playvol: $masterVolume,panel:$panelnum,arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }else if (currentScreen == "Panel1") {
-            Panel1(screen: $currentScreen,panel:$panelnum)
+            Panel1(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }else if (currentScreen == "Panel2") {
-            Panel2(screen: $currentScreen,panel:$panelnum)
+            Panel2(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }else if (currentScreen == "Panel3") {
-            Panel3(screen: $currentScreen,panel:$panelnum)
+            Panel3(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }
         VStack{
         }.onAppear{

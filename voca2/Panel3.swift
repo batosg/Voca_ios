@@ -11,11 +11,11 @@ import AVFoundation
 struct Panel3: View {
     @Binding var screen: String
     @Binding var panel: Int
-    @State private var phraseSet1: [String] = ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet6: [String] = ["ZZZZZZ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet7: [String] = ["ZAZAZA", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet8: [String] = ["QQQQQ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    
+    @Binding var arrnum: Int
+    @Binding var phraseSet1: [String]
+    @Binding var phraseSet6: [String]
+    @Binding var phraseSet7: [String]
+    @Binding var phraseSet8: [String]
    
     var body: some View {
         
@@ -33,7 +33,7 @@ struct Panel3: View {
                                     Button(action: {
                                         if(index==1){
                                             screen="Panel1"
-                                            self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
+                                            self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
                                         }else if (index==2){
                                             screen="Panel2"
                                             self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
@@ -43,7 +43,7 @@ struct Panel3: View {
 
                                         }else if (index==0){
                                             screen="option"
-                                            self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
+                                            self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
                                         }
                                     }) {
                                         
@@ -69,10 +69,10 @@ struct Panel3: View {
                                     }
                                     ForEach(0..<4) { index in
                                         Button(action: {
-                                            print("\(phraseSet7[index]) ")
+                                            print("\(phraseSet8[index]) ")
                                         }) {
-                                            if(index < phraseSet7.count){
-                                            Text("\(phraseSet7[index]) ")
+                                            if(index < phraseSet8.count){
+                                            Text("\(phraseSet8[index]) ")
                                                 .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                                 .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
@@ -85,11 +85,11 @@ struct Panel3: View {
                                 VStack{
                                     ForEach(4..<9) { index in
                                         Button(action: {
-                                            print("\(phraseSet7[index]) ")
+                                            print("\(phraseSet8[index]) ")
                                             
                                         }) {
-                                            if(index < phraseSet7.count){
-                                            Text("\(phraseSet7[index]) ")
+                                            if(index < phraseSet8.count){
+                                            Text("\(phraseSet8[index]) ")
                                                 .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                                 .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
@@ -102,11 +102,11 @@ struct Panel3: View {
                                 VStack{
                                     ForEach(9..<14) { index in
                                         Button(action: {
-                                            print("\(phraseSet7[index]) ")
+                                            print("\(phraseSet8[index]) ")
                                             
                                         }) {
-                                            if(index < phraseSet7.count){
-                                            Text("\(phraseSet7[index]) ")
+                                            if(index < phraseSet8.count){
+                                            Text("\(phraseSet8[index]) ")
                                                 .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                                 .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
@@ -119,11 +119,11 @@ struct Panel3: View {
                                 VStack{
                                     ForEach(14..<18) { index in
                                         Button(action: {
-                                            print("\(phraseSet7[index]) ")
+                                            print("\(phraseSet8[index]) ")
                                             
                                         }) {
-                                            if(index < phraseSet7.count){
-                                            Text("\(phraseSet7[index]) ")
+                                            if(index < phraseSet8.count){
+                                            Text("\(phraseSet8[index]) ")
                                                 .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                                 .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)

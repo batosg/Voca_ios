@@ -18,81 +18,15 @@
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
-            uuid = "C98C6EC7-0CA2-4850-ACE2-27535B7F30B8"
+            uuid = "388B4454-B443-4075-A509-F26951C20276"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "voca2/Recording.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "72BA988F-7D37-4F0C-BE07-B15E8B4B9C61"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "voca2/ContentView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "ContentView"
-            landmarkType = "14">
+            symbolName = ""
+            moduleName = "">
             <Locations>
-               <Location
-                  uuid = "72BA988F-7D37-4F0C-BE07-B15E8B4B9C61 - e69e508c134557d9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "property wrapper backing initializer of voca2.ContentView.phraseSet1 : Swift.Array&lt;Swift.String&gt;"
-                  moduleName = "voca2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/BATORGIL/Downloads/VOCAG/voca2/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "72BA988F-7D37-4F0C-BE07-B15E8B4B9C61 - a495b57517b418a6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "voca2.ContentView.init() -&gt; voca2.ContentView"
-                  moduleName = "voca2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/BATORGIL/Downloads/VOCAG/voca2/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "380">
-               </Location>
-               <Location
-                  uuid = "72BA988F-7D37-4F0C-BE07-B15E8B4B9C61 - ce1dfe9826fe7880"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "voca2.ContentView.init(scan: voca2.scanTimer, currentScreen: Swift.String, currentText: Swift.String, masterVolume: Swift.Float, panelnum: Swift.Int) -&gt; voca2.ContentView"
-                  moduleName = "voca2"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/BATORGIL/Downloads/VOCAG/voca2/ContentView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "188">
-               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

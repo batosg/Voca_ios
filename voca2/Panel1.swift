@@ -11,10 +11,11 @@ import AVFoundation
 struct Panel1: View {
     @Binding var screen: String
     @Binding var panel: Int
-    @State private var phraseSet1: [String] = ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet6: [String] = ["ZZZZZZ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet7: [String] = ["ZAZAZA", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var phraseSet8: [String] = ["QQQQQ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
+    @Binding var arrnum: Int
+    @Binding var phraseSet1: [String]
+    @Binding var phraseSet6: [String]
+    @Binding var phraseSet7: [String]
+    @Binding var phraseSet8: [String]
     
     var body: some View {
         
@@ -71,6 +72,9 @@ struct Panel1: View {
                                     ForEach(0..<4) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
+                                            panel=1
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -87,7 +91,9 @@ struct Panel1: View {
                                     ForEach(4..<9) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=1
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -104,7 +110,9 @@ struct Panel1: View {
                                     ForEach(9..<14) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=1
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -121,7 +129,9 @@ struct Panel1: View {
                                     ForEach(14..<18) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=1
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")

@@ -2,7 +2,7 @@
 //  voca2App.swift
 //  voca2
 //
-//  Created by 髙橋大 on 2022/04/06.
+//  Created by GANBAT BATORGIL on 2022/04/06.
 //
 
 import SwiftUI

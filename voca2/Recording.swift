@@ -14,11 +14,12 @@ import AVFoundation
 struct recordView: View {
     
     // ContentViewの変数をバインディングする
-     @Binding var screen: String
-        @Binding var theText: String
-        @Binding var playvol: Float
-        @Binding var panel: Int
-        @Binding var phraseSet1: [String]
+    @Binding var screen: String
+    @Binding var theText: String
+    @Binding var playvol: Float
+    @Binding var panel: Int
+    @Binding var arrnum: Int
+    @Binding var phraseSet1: [String]
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
@@ -51,6 +52,18 @@ struct recordView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 800)
                 
+                if(panel==0){
+                    
+                    Text("\(phraseSet1[arrnum])")
+                }else if(panel==1){
+                    
+                    Text("\(phraseSet6[arrnum])")
+                }else if(panel==2){
+                   
+                    Text("\(phraseSet7[arrnum])")
+                }else if(panel==3){
+                    Text("\(phraseSet8[arrnum])")
+                }
                 TextField("表示名を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
@@ -126,24 +139,29 @@ struct recordView: View {
                    
                     // 設定画面に遷移するボタン
                     Button(action: {
-                        phraseSet1[0] = phrase
+                        
+                        
 
                         if(selection == 0){
                             
                         }else{
                             
                         }
-                        phraseSet4.append(phrase)
-                        self.writingToFile_Da(savedata: phraseSet4, savename: "phrarray.dat")
+//                        phraseSet4.append(phrase)
+//                        self.writingToFile_Da(savedata: phraseSet4, savename: "phrarray.dat")
                         
                         if(panel==0){
                             screen="option"
+                            phraseSet1[arrnum] = phrase
                         }else if(panel==1){
                             screen="Panel1"
+                            phraseSet6[arrnum] = phrase
                         }else if(panel==2){
                             screen="Panel2"
+                            phraseSet7[arrnum] = phrase
                         }else if(panel==3){
                             screen="Panel3"
+                            phraseSet8[arrnum] = phrase
                         }
                     }) {
                         Text("戻る")
