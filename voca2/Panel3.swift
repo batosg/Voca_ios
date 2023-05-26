@@ -33,17 +33,12 @@ struct Panel3: View {
                                     Button(action: {
                                         if(index==1){
                                             screen="Panel1"
-                                            self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
                                         }else if (index==2){
                                             screen="Panel2"
-                                            self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
                                         }else if (index==3){
                                             screen="Panel3"
-                                            self.writingToFile_Da(savedata: phraseSet7, savename: "phrarray.dat")
-
                                         }else if (index==0){
                                             screen="option"
-                                            self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
                                         }
                                     }) {
                                         
@@ -56,7 +51,7 @@ struct Panel3: View {
                                     }
                                 }
                             }
-                            
+                            Spacer().frame(height:200)
                             HStack{
                                 VStack{
                                     Button(action: {
@@ -70,6 +65,9 @@ struct Panel3: View {
                                     ForEach(0..<4) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
+                                            panel=3
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -86,7 +84,9 @@ struct Panel3: View {
                                     ForEach(4..<9) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=3
+                                            screen="record"
+                                            arrnum=index
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -103,7 +103,10 @@ struct Panel3: View {
                                     ForEach(9..<14) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=3
+                                            screen="record"
+                                            arrnum=index
+
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -120,7 +123,10 @@ struct Panel3: View {
                                     ForEach(14..<18) { index in
                                         Button(action: {
                                             print("\(phraseSet8[index]) ")
-                                            
+                                            panel=3
+                                            screen="record"
+                                            arrnum=index
+
                                         }) {
                                             if(index < phraseSet8.count){
                                             Text("\(phraseSet8[index]) ")
@@ -171,11 +177,13 @@ struct Panel3: View {
                                     .background(Color(red: 255/255, green: 75/255, blue: 0))
                                     .border(Color.black)
                             }
+                            
                             // 定型句画面に戻るボタン
                             Button(action: {
                                 screen = "phrase"
                                 panel=3
                                 
+                                self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
                             }) {
                                 Text("戻る")
                                     .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -184,6 +192,7 @@ struct Panel3: View {
                                     .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                                     .border(Color.black)
                             }
+                            
                         }
                     }
             }//.onAppear(){

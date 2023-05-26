@@ -31,8 +31,8 @@ struct recordView: View {
         let pick = ["録音", "合成音声"]
         @State private var selection = 0
         @State private var phraseSet4: [String] = []
-        
-        
+        @State private var showingAlert = false
+            
         
         @State private var isRecording = false
         @State private var audioRecorder: AVAudioRecorder?
@@ -136,32 +136,47 @@ struct recordView: View {
                         
                     }
                    
-                   
-                    // 設定画面に遷移するボタン
                     Button(action: {
-                        
-                        
-
-                        if(selection == 0){
-                            
-                        }else{
-                            
+                        if(phrase == ""){
+                            showingAlert = true
                         }
-//                        phraseSet4.append(phrase)
-//                        self.writingToFile_Da(savedata: phraseSet4, savename: "phrarray.dat")
-                        
+                            .alert("Important message", isPresented: $showingAlert) {
+                                        Button("OK", role: .cancel) { }
+                                    }
                         if(panel==0){
-                            screen="option"
                             phraseSet1[arrnum] = phrase
                         }else if(panel==1){
-                            screen="Panel1"
+                    
                             phraseSet6[arrnum] = phrase
                         }else if(panel==2){
-                            screen="Panel2"
+                     
                             phraseSet7[arrnum] = phrase
                         }else if(panel==3){
-                            screen="Panel3"
+                     
                             phraseSet8[arrnum] = phrase
+                        }
+                    }) {
+                        Text("保存")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
+                    // 設定画面に遷移するボタン
+                    Button(action: {
+                        if(panel==0){
+                            screen="option"
+                           
+                        }else if(panel==1){
+                            screen="Panel1"
+                      
+                        }else if(panel==2){
+                            screen="Panel2"
+                     
+                        }else if(panel==3){
+                            screen="Panel3"
+                     
                         }
                     }) {
                         Text("戻る")
