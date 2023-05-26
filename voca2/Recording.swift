@@ -140,20 +140,20 @@ struct recordView: View {
                         if(phrase == ""){
                             showingAlert = true
                         }
-                            .alert("Important message", isPresented: $showingAlert) {
-                                        Button("OK", role: .cancel) { }
-                                    }
-                        if(panel==0){
-                            phraseSet1[arrnum] = phrase
-                        }else if(panel==1){
-                    
-                            phraseSet6[arrnum] = phrase
-                        }else if(panel==2){
-                     
-                            phraseSet7[arrnum] = phrase
-                        }else if(panel==3){
-                     
-                            phraseSet8[arrnum] = phrase
+                         
+                        else{
+                            if(panel==0){
+                                phraseSet1[arrnum] = phrase
+                            }else if(panel==1){
+                                
+                                phraseSet6[arrnum] = phrase
+                            }else if(panel==2){
+                                
+                                phraseSet7[arrnum] = phrase
+                            }else if(panel==3){
+                                
+                                phraseSet8[arrnum] = phrase
+                            }
                         }
                     }) {
                         Text("保存")
@@ -162,7 +162,9 @@ struct recordView: View {
                             .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
-                    }
+                    }   .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("エラー"),message: Text("語句が入っておりません"),dismissButton: .default(Text("OK"),action: {}))
+                            }
                     // 設定画面に遷移するボタン
                     Button(action: {
                         if(panel==0){
