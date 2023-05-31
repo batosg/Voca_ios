@@ -156,18 +156,7 @@ struct optionView: View {
                 }
                 
                 VStack{
-                    // 録音画面に遷移するボタン
-                    Button(action: {
-                        screen = "record"
-                        panel=0
-                    }) {
-                        Text("新規語句設定")
-                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
-                    }
+                 
                     // 設定を初期化するボタン
                     Button(action: {
                         
