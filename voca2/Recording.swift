@@ -32,7 +32,7 @@ struct recordView: View {
         @State private var selection = 0
         @State private var phraseSet4: [String] = []
         @State private var showingAlert = false
-            
+        let synthesiser = AVSpeechSynthesizer()
         
         @State private var isRecording = false
         @State private var audioRecorder: AVAudioRecorder?
@@ -53,13 +53,11 @@ struct recordView: View {
                 .frame(width: 800)
                 
                 if(panel==0){
-                    
                     Text("\(phraseSet1[arrnum])")
-                }else if(panel==1){
                     
+                }else if(panel==1){
                     Text("\(phraseSet6[arrnum])")
                 }else if(panel==2){
-                   
                     Text("\(phraseSet7[arrnum])")
                 }else if(panel==3){
                     Text("\(phraseSet8[arrnum])")
@@ -122,7 +120,7 @@ struct recordView: View {
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
                             utterance.volume = playvol
-                            let synthesiser = AVSpeechSynthesizer()
+                           
                             synthesiser.speak(utterance)
                             
                         }) {
@@ -135,7 +133,7 @@ struct recordView: View {
                         }
                         
                     }
-                   
+                    //Alert message
                     Button(action: {
                         if(phrase == ""){
                             showingAlert = true
@@ -163,7 +161,7 @@ struct recordView: View {
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
                     }   .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("エラー"),message: Text("語句が入っておりません"),dismissButton: .default(Text("OK"),action: {}))
+                        Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
                             }
                     // 設定画面に遷移するボタン
                     Button(action: {
@@ -190,12 +188,8 @@ struct recordView: View {
                     }
                     
                 }
-            }.onAppear(){
-                UISegmentedControl.appearance().setTitleTextAttributes(
-                    [.font : UIFont.systemFont(ofSize: 30)], for: .normal
-                )
-                phraseSet4 = self.readFromFile_Da(savename: "phrarray.dat")
             }
+            
         }
        
     }
@@ -234,52 +228,52 @@ struct recordView: View {
                 return read_strings
             }catch{
                 fatalError("ファイル読み込みエラー")
-                
             }
         }
-        // =================================================================================
-    func startRecording() {
-        let audioSession = AVAudioSession.sharedInstance()
+    // =================================================================================
+func startRecording() {
+    let audioSession = AVAudioSession.sharedInstance()
+    do {
+        try audioSession.setCategory(.playAndRecord, mode: .default)
+        try audioSession.setActive(true)
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+        audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+        audioRecorder?.record()
+        isRecording = true
+    } catch {
+        print("Failed to start recording: \(error.localizedDescription)")
+    
+    }
+}
+    
+    func stopRecording() {
+        audioRecorder?.stop()
+        audioRecorder = nil
+        isRecording = false
+        audioURL = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
+    }
+    
+    func playRecordedAudio() {
+        guard let url = audioURL else { return }
         do {
-            try audioSession.setCategory(.playAndRecord, mode: .default)
-            try audioSession.setActive(true)
-            let audioFilename = getDocumentsDirectory().appendingPathComponent("recording.m4a")
-            let settings = [
-                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVSampleRateKey: 12000,
-                AVNumberOfChannelsKey: 1,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-            ]
-            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
-            audioRecorder?.record()
-            isRecording = true
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.play()
         } catch {
-            print("Failed to start recording")
+            print("Failed to play recorded audio")
         }
     }
-        
-        func stopRecording() {
-            audioRecorder?.stop()
-            audioRecorder = nil
-            isRecording = false
-            audioURL = getDocumentsDirectory().appendingPathComponent("recording.m4a")
-        }
-        
-        func playRecordedAudio() {
-            guard let url = audioURL else { return }
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
-                audioPlayer?.play()
-            } catch {
-                print("Failed to play recorded audio")
-            }
-        }
-        
-        func getDocumentsDirectory() -> URL {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            let documentsDirectory = paths[0]
-            return documentsDirectory
-        }
-        
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
+    
+}
 

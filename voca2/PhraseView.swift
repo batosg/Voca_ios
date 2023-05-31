@@ -17,6 +17,7 @@ struct phraseView: View {
     @Binding var theText: String
     @Binding var playvol: Float
     @Binding var panel: Int
+    let synthesiser = AVSpeechSynthesizer()
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
     @State private var phraseSet2: [String] = []
     
@@ -173,7 +174,7 @@ struct phraseView: View {
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
                             utterance.volume = playvol
-                            let synthesiser = AVSpeechSynthesizer()
+                          
                             synthesiser.speak(utterance)
                         }) {
                             Text("読み上げ")
