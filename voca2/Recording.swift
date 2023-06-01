@@ -32,7 +32,7 @@ struct recordView: View {
         @State private var selection = 0
         @State private var phraseSet4: [String] = []
         @State private var showingAlert = false
-        let synthesiser = AVSpeechSynthesizer()
+    @State var synthesiser = AVSpeechSynthesizer()
         
         @State private var isRecording = false
         @State private var audioRecorder: AVAudioRecorder?
@@ -149,8 +149,8 @@ struct recordView: View {
                                 
                                 phraseSet7[arrnum] = phrase
                             }else if(panel==3){
-                                
                                 phraseSet8[arrnum] = phrase
+                               // writingToFile_Da(savedata: phraseSet8, savename: "phraseSet8")
                             }
                         }
                     }) {

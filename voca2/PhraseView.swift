@@ -17,7 +17,7 @@ struct phraseView: View {
     @Binding var theText: String
     @Binding var playvol: Float
     @Binding var panel: Int
-    let synthesiser = AVSpeechSynthesizer()
+    @State var synthesiser = AVSpeechSynthesizer()
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
     @State private var phraseSet2: [String] = []
     
@@ -190,10 +190,15 @@ struct phraseView: View {
                         ForEach(0..<4) { index in
                             Button(action: {
                                 theText += "\(phraseSet2[index]) "
-                                buttonVoice[index].volume = playvol
-                                
+//                                buttonVoice[index].volume = playvol
                                 // ボタンアクション時の読み上げ
-                                buttonVoice[index].play()
+//                                buttonVoice[index].play()
+                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
+                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                utterance.rate = 0.5
+                                utterance.volume = playvol
+                               
+                                synthesiser.speak(utterance)
                             }) {
                                 if(index < phraseSet2.count){
                                 Text("\(phraseSet2[index]) ")
