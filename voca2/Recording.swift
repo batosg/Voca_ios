@@ -12,7 +12,7 @@ import AVFoundation
 
 // 録音画面
 struct recordView: View {
-    
+    @State private var array: [String] = []
     // ContentViewの変数をバインディングする
     @Binding var screen: String
     @Binding var theText: String
@@ -32,7 +32,7 @@ struct recordView: View {
         @State private var selection = 0
         @State private var phraseSet4: [String] = []
         @State private var showingAlert = false
-    @State var synthesiser = AVSpeechSynthesizer()
+        @State var synthesiser = AVSpeechSynthesizer()
         
         @State private var isRecording = false
         @State private var audioRecorder: AVAudioRecorder?
@@ -138,20 +138,30 @@ struct recordView: View {
                         if(phrase == ""){
                             showingAlert = true
                         }
-                         
+//                        ===================================== ===================================== ===================================== ===================================== =====================================
                         else{
+                            //書き込んでから読み込む（保存）
                             if(panel==0){
                                 phraseSet1[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
+                                phraseSet1 = readFromFile_Da(savename: "ps0.dat")
                             }else if(panel==1){
                                 
                                 phraseSet6[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
+                                phraseSet6 = readFromFile_Da(savename: "ps1.dat")
                             }else if(panel==2){
                                 
                                 phraseSet7[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
+                                phraseSet7 = readFromFile_Da(savename: "ps2.dat")
                             }else if(panel==3){
                                 phraseSet8[arrnum] = phrase
-                               // writingToFile_Da(savedata: phraseSet8, savename: "phraseSet8")
+                                writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
+                                phraseSet8 = readFromFile_Da(savename: "ps3.dat")
+                               
                             }
+ //                        ===================================== ===================================== ===================================== ===================================== =====================================
                         }
                     }) {
                         Text("保存")
@@ -193,6 +203,13 @@ struct recordView: View {
         }
        
     }
+    func saveArray() {
+           writingToFile_Da(savedata: array, savename: "array.txt")
+       }
+       
+       func loadArray() {
+           array = readFromFile_Da(savename: "array.txt")
+       }
         // ファイル書き込み（Data）=============================================================
         func writingToFile_Da(savedata: [String], savename: String) {
             // DocumentsフォルダURL取得

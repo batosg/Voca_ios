@@ -171,6 +171,7 @@ struct Panel3: View {
                                 screen = "phrase"
                                 panel=3
                                 
+                                self.writingToFile_Da(savedata: phraseSet8, savename: "ps3.txt")
                                 self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
                             }) {
                                 Text("戻る")

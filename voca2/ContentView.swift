@@ -45,11 +45,11 @@ struct ContentView: View {
         }else if (currentScreen == "Panel3") {
             Panel3(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }
-        VStack{
-        }.onAppear{
-            self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
-            self.writingToFile_Da(savedata: voiceSet1, savename: "vcarray.dat")
-        }
+         VStack{
+        }//.onAppear{
+          //  self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
+          //  self.writingToFile_Da(savedata: voiceSet1, savename: "vcarray.dat")
+       // }
     }
     
        // ファイル書き込み（Data）=============================================================

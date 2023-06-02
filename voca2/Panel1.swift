@@ -20,173 +20,171 @@ struct Panel1: View {
     var body: some View {
         
         
-          
-    
-            ZStack {
-                Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
-                
-                    HStack {
-                        VStack {
-                            HStack{
-                               
+        
+        
+        ZStack {
+            Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
+            
+            HStack {
+                VStack {
+                    HStack{
+                        
+                        
+                        ForEach(0..<4) { index in
+                            Button(action: {
+                                if(index==1){
+                                    screen="Panel1"
+                                }else if (index==2){
+                                    screen="Panel2"
+                                }else if (index==3){
+                                    screen="Panel3"
+                                }else if (index==0){
+                                    screen="option"
+                                }
+                            }) {
                                 
-                                ForEach(0..<4) { index in
-                                    Button(action: {
-                                        if(index==1){
-                                            screen="Panel1"
-                                        }else if (index==2){
-                                            screen="Panel2"
-                                        }else if (index==3){
-                                            screen="Panel3"
-                                        }else if (index==0){
-                                            screen="option"
-                                        }
-                                    }) {
-                                        
-                                        Text(" Panel"+" \(index)")
+                                Text(" Panel"+" \(index)")
+                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                    .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
+                                    .background(index == 1 ? Color.blue : Color.white)                                      //Panel数が1であれば色を青にする
+                                    .border(Color.black)
+                            }
+                        }
+                    }
+                    Spacer().frame(height:200)
+                    HStack{
+                        VStack{
+                            Button(action: {
+                                print("スペース")
+                            }) {
+                                Text(" ")
+                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                    .foregroundColor(Color.white)
+                                    .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)                 .background(Color(red: 191/255, green: 228/255, blue: 255/255))
+                            }
+                            ForEach(0..<4) { index in
+                                Button(action: {
+                                    print("\(phraseSet6[index]) ")
+                                    panel=1
+                                    screen="record"
+                                    arrnum=index
+                                }) {
+                                    if(index < phraseSet6.count){
+                                        Text("\(phraseSet6[index]) ")
                                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                             .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                             .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                            .background(index == 1 ? Color.blue : Color.white)                                      //Panel数が1であれば色を青にする
+                                            .background(Color.white)
                                             .border(Color.black)
                                     }
                                 }
                             }
-                            Spacer().frame(height:200)
-                            HStack{
-                                VStack{
-                                    Button(action: {
-                                        print("スペース")
-                                    }) {
-                                        Text(" ")
-                                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                            .foregroundColor(Color.white)
-                                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)                 .background(Color(red: 191/255, green: 228/255, blue: 255/255))
-                                    }
-                                    ForEach(0..<4) { index in
-                                        Button(action: {
-                                            print("\(phraseSet6[index]) ")
-                                            panel=1
-                                            screen="record"
-                                            arrnum=index
-                                        }) {
-                                            if(index < phraseSet6.count){
-                                            Text("\(phraseSet6[index]) ")
-                                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                                .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                                .background(Color.white)
-                                                .border(Color.black)
-                                            }
-                                        }
-                                    }
-                                }
-                                VStack{
-                                    ForEach(4..<9) { index in
-                                        Button(action: {
-                                            print("\(phraseSet6[index]) ")
-                                            panel=1
-                                            screen="record"
-                                            arrnum=index
-                                        }) {
-                                            if(index < phraseSet6.count){
-                                            Text("\(phraseSet6[index]) ")
-                                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                                .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                                .background(Color.white)
-                                                .border(Color.black)
-                                            }
-                                        }
-                                    }
-                                }
-                                VStack{
-                                    ForEach(9..<14) { index in
-                                        Button(action: {
-                                            print("\(phraseSet6[index]) ")
-                                            panel=1
-                                            screen="record"
-                                            arrnum=index
-                                        }) {
-                                            if(index < phraseSet6.count){
-                                            Text("\(phraseSet6[index]) ")
-                                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                                .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                                .background(Color.white)
-                                                .border(Color.black)
-                                            }
-                                        }
-                                    }
-                                }
-                                VStack{
-                                    ForEach(14..<18) { index in
-                                        Button(action: {
-                                            print("\(phraseSet6[index]) ")
-                                            panel=1
-                                            screen="record"
-                                            arrnum=index
-                                        }) {
-                                            if(index < phraseSet6.count){
-                                            Text("\(phraseSet6[index]) ")
-                                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                                .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                                .background(Color.white)
-                                                .border(Color.black)
-                                            }
-                                        }
-                                    }
-                                    Button(action: {
-                                        print("スペース")
-                                    }) {
-                                        Text(" ")
-                                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                            .foregroundColor(Color.white)
-                                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)                 .background(Color(red: 191/255, green: 228/255, blue: 255/255))
+                        }
+                        VStack{
+                            ForEach(4..<9) { index in
+                                Button(action: {
+                                    print("\(phraseSet6[index]) ")
+                                    panel=1
+                                    screen="record"
+                                    arrnum=index
+                                }) {
+                                    if(index < phraseSet6.count){
+                                        Text("\(phraseSet6[index]) ")
+                                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
+                                            .background(Color.white)
+                                            .border(Color.black)
                                     }
                                 }
                             }
                         }
-                        
                         VStack{
-                          
-                            // 設定を初期化するボタン
+                            ForEach(9..<14) { index in
+                                Button(action: {
+                                    print("\(phraseSet6[index]) ")
+                                    panel=1
+                                    screen="record"
+                                    arrnum=index
+                                }) {
+                                    if(index < phraseSet6.count){
+                                        Text("\(phraseSet6[index]) ")
+                                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
+                                            .background(Color.white)
+                                            .border(Color.black)
+                                    }
+                                }
+                            }
+                        }
+                        VStack{
+                            ForEach(14..<18) { index in
+                                Button(action: {
+                                    print("\(phraseSet6[index]) ")
+                                    panel=1
+                                    screen="record"
+                                    arrnum=index
+                                }) {
+                                    if(index < phraseSet6.count){
+                                        Text("\(phraseSet6[index]) ")
+                                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
+                                            .background(Color.white)
+                                            .border(Color.black)
+                                    }
+                                }
+                            }
                             Button(action: {
-                                print("初期化")
-                                panel=0
-                                screen="option"
-                                self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
+                                print("スペース")
                             }) {
-                                Text("初期化")
+                                Text(" ")
                                     .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                                     .foregroundColor(Color.white)
-                                    .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
-                                    .background(Color(red: 255/255, green: 75/255, blue: 0))
-                                    .border(Color.black)
+                                    .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)                 .background(Color(red: 191/255, green: 228/255, blue: 255/255))
                             }
-                            
-                            // 定型句画面に戻るボタン
-                            Button(action: {
-                                screen = "phrase"
-                                panel=1
-                                self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
-                            }) {
-                                Text("戻る")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                    .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .border(Color.black)
-                            }
-                            
                         }
                     }
-            }//.onAppear(){
-                //self.writingToFile_Da(savedata: phraseSet5, savename: "phrarray.dat")
-                //phraseSet5 = self.readFromFile_Da(savename: "phrarray.dat")
+                }
                 
+                VStack{
+                    
+                    // 設定を初期化するボタン
+                    Button(action: {
+                        print("初期化")
+                        panel=0
+                        screen="option"
+                        self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
+                    }) {
+                        Text("初期化")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color.white)
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 255/255, green: 75/255, blue: 0))
+                            .border(Color.black)
+                    }
+                    
+                    // 定型句画面に戻るボタン
+                    Button(action: {
+                        screen = "phrase"
+                        panel=1
+                        self.writingToFile_Da(savedata: phraseSet6, savename: "ps1.txt")
+                        self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
+                    }) {
+                        Text("戻る")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
+                    
+                }
             }
+        }
+    }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得

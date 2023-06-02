@@ -23,6 +23,8 @@ struct optionView: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
+
+  
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     var body: some View {
@@ -173,9 +175,14 @@ struct optionView: View {
                     
                     // 定型句画面に戻るボタン
                     Button(action: {
+                        let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps0.dat")
+                        let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
                         screen = "phrase"
                         panel=0
-                        self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
+                        self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.txt")
+                        self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.txt")
+                        overwriteFile(from: sourceURL, to: destinationURL)
+                        
                     }) {
                         Text("戻る")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -187,10 +194,18 @@ struct optionView: View {
                 }
             }
         }.onAppear(){
-            self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
+            phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
         }
     }
-    
+    func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
+            do {
+                let sourceData = try Data(contentsOf: sourceURL)
+                try sourceData.write(to: destinationURL, options: .atomic)
+                print("File overwritten successfully.")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     
      // ファイル書き込み（Data）=============================================================
      func writingToFile_Da(savedata: [String], savename: String) {
