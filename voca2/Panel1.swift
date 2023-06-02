@@ -170,8 +170,12 @@ struct Panel1: View {
                     Button(action: {
                         screen = "phrase"
                         panel=1
-                        self.writingToFile_Da(savedata: phraseSet6, savename: "ps1.txt")
+                        let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps1.dat")
+                        let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
+  
+                        self.writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
                         self.writingToFile_Da(savedata: phraseSet6, savename: "phrarray.dat")
+                        overwriteFile(from: sourceURL, to: destinationURL)
                     }) {
                         Text("戻る")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -183,8 +187,19 @@ struct Panel1: View {
                     
                 }
             }
+        }.onAppear(){
+            phraseSet6 = self.readFromFile_Da(savename: "ps1.dat")
         }
     }
+    func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
+            do {
+                let sourceData = try Data(contentsOf: sourceURL)
+                try sourceData.write(to: destinationURL, options: .atomic)
+                print("File overwritten successfully.")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得

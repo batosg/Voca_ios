@@ -175,12 +175,12 @@ struct optionView: View {
                     
                     // 定型句画面に戻るボタン
                     Button(action: {
-                        let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps0.dat")
-                        let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
                         screen = "phrase"
                         panel=0
-                        self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.txt")
-                        self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.txt")
+                        let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps0.dat")
+                        let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
+                        self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
+                       
                         overwriteFile(from: sourceURL, to: destinationURL)
                         
                     }) {

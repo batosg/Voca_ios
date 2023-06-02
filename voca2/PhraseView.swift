@@ -197,7 +197,6 @@ struct phraseView: View {
                                 utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                 utterance.rate = 0.5
                                 utterance.volume = playvol
-                               
                                 synthesiser.speak(utterance)
                             }) {
                                 if(index < phraseSet2.count){
@@ -218,8 +217,14 @@ struct phraseView: View {
                         ForEach(4..<9) { index in
                             Button(action: {
                                 theText += "\(phraseSet2[index]) "
-                                buttonVoice[index].volume = playvol
-                                buttonVoice[index].play() // ボタンアクション時の読み上げ
+                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
+                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                utterance.rate = 0.5
+                                utterance.volume = playvol
+                                synthesiser.speak(utterance)
+//                                buttonVoice[index].volume = playvol
+//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
+                                
                             }) {
                                 if(index < phraseSet2.count){
                                 Text("\(phraseSet2[index]) ")
@@ -239,8 +244,13 @@ struct phraseView: View {
                         ForEach(9..<14) { index in
                             Button(action: {
                                 theText += "\(phraseSet2[index]) "
-                                buttonVoice[index].volume = playvol
-                                buttonVoice[index].play() // ボタンアクション時の読み上げ
+                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
+                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                utterance.rate = 0.5
+                                utterance.volume = playvol
+                                synthesiser.speak(utterance)
+//                                buttonVoice[index].volume = playvol
+//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
                             }) {
                                 if(index < phraseSet2.count){
                                 Text("\(phraseSet2[index]) ")
@@ -260,8 +270,13 @@ struct phraseView: View {
                         ForEach(14..<18) { index in
                             Button(action: {
                                 theText += "\(phraseSet2[index]) "
-                                buttonVoice[index].volume = playvol
-                                buttonVoice[index].play() // ボタンアクション時の読み上げ
+                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
+                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                utterance.rate = 0.5
+                                utterance.volume = playvol
+                                synthesiser.speak(utterance)
+//                                buttonVoice[index].volume = playvol
+//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
                             }) {
                                 if(index < phraseSet2.count){
                                 Text("\(phraseSet2[index])")
