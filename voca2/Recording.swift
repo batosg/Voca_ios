@@ -51,10 +51,9 @@ struct recordView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 800)
-                
+                //パネルを確認し、そのパネルに応じる配列を書き換える
                 if(panel==0){
                     Text("\(phraseSet1[arrnum])")
-                    
                 }else if(panel==1){
                     Text("\(phraseSet6[arrnum])")
                 }else if(panel==2){
@@ -138,7 +137,6 @@ struct recordView: View {
                         if(phrase == ""){
                             showingAlert = true
                         }
-//                        ===================================== ===================================== ===================================== ===================================== =====================================
                         else{
                             //書き込んでから読み込む（保存）
                             if(panel==0){
@@ -161,7 +159,6 @@ struct recordView: View {
                                 phraseSet8 = readFromFile_Da(savename: "ps3.dat")
                                
                             }
- //                        ===================================== ===================================== ===================================== ===================================== =====================================
                         }
                     }) {
                         Text("保存")
@@ -173,7 +170,9 @@ struct recordView: View {
                     }   .alert(isPresented: $showingAlert) {
                         Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
                             }
+                    
                     // 設定画面に遷移するボタン
+                    //最後に入った画面に応じて戻る
                     Button(action: {
                         if(panel==0){
                             screen="option"
@@ -203,14 +202,7 @@ struct recordView: View {
         }
        
     }
-    func saveArray() {
-           writingToFile_Da(savedata: array, savename: "array.txt")
-       }
-       
-       func loadArray() {
-           array = readFromFile_Da(savename: "array.txt")
-       }
-        // ファイル書き込み（Data）=============================================================
+    // ファイル書き込み（Data）=============================================================
         func writingToFile_Da(savedata: [String], savename: String) {
             // DocumentsフォルダURL取得
             guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {

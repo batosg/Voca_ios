@@ -156,8 +156,8 @@ struct optionView: View {
                         }
                     }
                 }
-                
                 VStack{
+                
                  
                     // 設定を初期化するボタン
                     Button(action: {
@@ -194,6 +194,7 @@ struct optionView: View {
                 }
             }
         }.onAppear(){
+            
             phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
         }
     }
@@ -206,46 +207,46 @@ struct optionView: View {
                 print("Error: \(error.localizedDescription)")
             }
         }
+    // ファイル書き込み（Data）=============================================================
+    func writingToFile_Da(savedata: [String], savename: String) {
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
+        }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの書き込み//JSONEncoderを利用
+        do {
+            let encoder = JSONEncoder()
+            let data: Data = try encoder.encode(savedata)
+            try data.write(to: fileURL)
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+    // =================================================================================
     
-     // ファイル書き込み（Data）=============================================================
-     func writingToFile_Da(savedata: [String], savename: String) {
-     // DocumentsフォルダURL取得
-     guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-     fatalError("フォルダURL取得エラー")
-     }
-     // 対象のファイルURL取得
-     let fileURL = dirURL.appendingPathComponent(savename)
-     // ファイルの書き込み//JSONEncoderを利用
-     do {
-     let encoder = JSONEncoder()
-     let data: Data = try encoder.encode(savedata)
-     try data.write(to: fileURL)
-     } catch {
-     print("Error: \(error)")
-     }
-     }
-     // =================================================================================
-     
-     // ファイル読み込み（Data）=============================================================
-     func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
-     // DocumentsフォルダURL取得
-     guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-     fatalError("フォルダURL取得エラー")
-     }
-     // 対象のファイルURL取得
-     let fileURL = dirURL.appendingPathComponent(savename)
-     // ファイルの読み込み//JSONDecoderを利用
-     do{
-     let fileContents = try Data(contentsOf: fileURL)
-     let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
-     // 読み込んだ内容を戻り値として返す
-     return read_strings
-     }catch{
-     fatalError("ファイル読み込みエラー")
-     
-     }
-     }
-     // =================================================================================
-     }
+    // ファイル読み込み（Data）=============================================================
+    func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
+        }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの読み込み//JSONDecoderを利用
+        do{
+            let fileContents = try Data(contentsOf: fileURL)
+            let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
+            // 読み込んだ内容を戻り値として返すå
+            return read_strings
+        }catch{
+            fatalError("ファイル読み込みエラー")
+            
+        }
+    }
+    // =================================================================================
+}
+    
      
 

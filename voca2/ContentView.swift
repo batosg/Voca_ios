@@ -9,6 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
+  
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
     @State var currentScreen = "phrase"
     @State var currentText = ""
@@ -17,11 +18,9 @@ struct ContentView: View {
     @State var arrnum: Int = 0
    
     @State private var phraseSet1: [String] = ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State public var phraseSet6: [String] = ["ZZZZZZ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State public var phraseSet7: [String] = ["ZAZAZA", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State public var phraseSet8: [String] = ["QQQQQ", "AAA", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
-    @State private var voiceSet1: [String] = ["konnitiwa", "onakasuita", "come", "thanks", "yes", "no", "hot", "cold", "kurusii", "bed", "body", "moziban", "toilet", "kyuuin", "tv", "up", "down", "change"]
-    
+    @State public var phraseSet6: [String] = ["こっちに来て", "こっちに来て", "こっちに来て", "こっちに来て", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
+    @State public var phraseSet7: [String] = ["お腹がすいた", "お腹がすいた", "お腹がすいた", "お腹がすいた", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
+    @State public var phraseSet8: [String] = ["こんにちは", "こんにちは", "こんにちは", "こんにちは", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
     // currentScreenに代入された文字列に応じて画面を切り替える
     var body: some View {
         if (currentScreen == "phrase") {
@@ -46,12 +45,36 @@ struct ContentView: View {
             Panel3(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }
          VStack{
-        }//.onAppear{
-          //  self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
-          //  self.writingToFile_Da(savedata: voiceSet1, savename: "vcarray.dat")
-       // }
+        }.onAppear{
+            //初期設定、ファイルが存在しているか確認し、なかったい場合作る
+            checkAndCreateFile(fileName: "ps0.dat",initialContent: ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+            checkAndCreateFile(fileName: "ps1.dat",initialContent: ["こっちに来て", "こっちに来て", "こっちに来て", "こっちに来て", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+            checkAndCreateFile(fileName: "ps2.dat",initialContent: ["お腹がすいた", "お腹がすいた", "お腹がすいた", "お腹がすいた", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+            checkAndCreateFile(fileName: "ps3.dat",initialContent: ["こんにちは", "こんにちは", "こんにちは", "こんにちは", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+        }
     }
-    
+    //ファイルを存在しているか確認し、なかったい場合作る
+    func checkAndCreateFile(fileName: String, initialContent: [String]) {
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Unable to access document directory")
+            return
+        }
+        
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            let content = "[\"" + initialContent.joined(separator: "\", \"") + "\"]"
+            
+            do {
+                try content.write(to: fileURL, atomically: true, encoding: .utf8)
+                print("File created successfully.")
+            } catch {
+                print("Error creating file: \(error)")
+            }
+        } else {
+            print("File already exists.")
+        }
+    }
        // ファイル書き込み（Data）=============================================================
         func writingToFile_Da(savedata: [String], savename: String) {
             // DocumentsフォルダURL取得
@@ -98,3 +121,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
