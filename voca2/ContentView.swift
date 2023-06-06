@@ -4,7 +4,7 @@
 //
 //  Created by GANBAT BATORGIL on 2023/04/06.
 //avspeech
-
+//av speech 1
 import SwiftUI
 import AVFoundation
 
