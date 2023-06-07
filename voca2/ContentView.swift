@@ -54,67 +54,67 @@ struct ContentView: View {
         }
     }
     //ファイルを存在しているか確認し、なかったい場合作る
-    func checkAndCreateFile(fileName: String, initialContent: [String]) {
-        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            print("Unable to access document directory")
-            return
+func checkAndCreateFile(fileName: String, initialContent: [String]) {
+    guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        print("Unable to access document directory")
+        return
+    }
+    
+    let fileURL = documentDirectory.appendingPathComponent(fileName)
+    
+    if !FileManager.default.fileExists(atPath: fileURL.path) {
+        let content = "[\"" + initialContent.joined(separator: "\", \"") + "\"]"
+        
+        do {
+            try content.write(to: fileURL, atomically: true, encoding: .utf8)
+            print("File created successfully.")
+        } catch {
+            print("Error creating file: \(error)")
         }
-        
-        let fileURL = documentDirectory.appendingPathComponent(fileName)
-        
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            let content = "[\"" + initialContent.joined(separator: "\", \"") + "\"]"
-            
-            do {
-                try content.write(to: fileURL, atomically: true, encoding: .utf8)
-                print("File created successfully.")
-            } catch {
-                print("Error creating file: \(error)")
-            }
-        } else {
-            print("File already exists.")
+    } else {
+        print("File already exists.")
+    }
+}
+    // ファイル書き込み（Data）=============================================================
+    func writingToFile_Da(savedata: [String], savename: String) {
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
+        }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの書き込み//JSONEncoderを利用
+        do {
+            let encoder = JSONEncoder()
+            let data: Data = try encoder.encode(savedata)
+            try data.write(to: fileURL)
+        } catch {
+            print("Error: \(error)")
         }
     }
-       // ファイル書き込み（Data）=============================================================
-        func writingToFile_Da(savedata: [String], savename: String) {
-            // DocumentsフォルダURL取得
-            guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                fatalError("フォルダURL取得エラー")
-            }
-            // 対象のファイルURL取得
-            let fileURL = dirURL.appendingPathComponent(savename)
-            // ファイルの書き込み//JSONEncoderを利用
-            do {
-                let encoder = JSONEncoder()
-                let data: Data = try encoder.encode(savedata)
-                try data.write(to: fileURL)
-            } catch {
-                print("Error: \(error)")
-            }
+    // =================================================================================
+    // ファイル読み込み（Data）=============================================================
+    func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
         }
-        // =================================================================================
-    
-        // ファイル読み込み（Data）=============================================================
-        func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
-            // DocumentsフォルダURL取得
-            guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                fatalError("フォルダURL取得エラー")
-            }
-            // 対象のファイルURL取得
-            let fileURL = dirURL.appendingPathComponent(savename)
-            // ファイルの読み込み//JSONDecoderを利用
-            do{
-                let fileContents = try Data(contentsOf: fileURL)
-                let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
-                // 読み込んだ内容を戻り値として返す
-                return read_strings
-            }catch{
-                fatalError("ファイル読み込みエラー")
-    
-            }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの読み込み//JSONDecoderを利用
+        do{
+            let fileContents = try Data(contentsOf: fileURL)
+            let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
+            // 読み込んだ内容を戻り値として返す
+            return read_strings
+        }catch{
+            fatalError("ファイル読み込みエラー")
+            
         }
-        // =================================================================================
+    }
+    // =================================================================================
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

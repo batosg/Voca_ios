@@ -23,21 +23,21 @@ struct recordView: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-        // scanTimerのインスタンスを作り観測する
-        @ObservedObject var scan = scanTimer()
-        
-        @State private var phrase = ""
-        @State private var readphr = ""
-        let pick = ["録音", "合成音声"]
-        @State private var selection = 0
-        @State private var phraseSet4: [String] = []
-        @State private var showingAlert = false
-        @State var synthesiser = AVSpeechSynthesizer()
-        
-        @State private var isRecording = false
-        @State private var audioRecorder: AVAudioRecorder?
-        @State private var audioPlayer: AVAudioPlayer?
-        @State private var audioURL: URL?
+    // scanTimerのインスタンスを作り観測する
+    @ObservedObject var scan = scanTimer()
+    
+    @State private var phrase = ""
+    @State private var readphr = ""
+    let pick = ["録音", "合成音声"]
+    @State private var selection = 0
+    @State private var phraseSet4: [String] = []
+    @State private var showingAlert = false
+    @State var synthesiser = AVSpeechSynthesizer()
+    
+    @State private var isRecording = false
+    @State private var audioRecorder: AVAudioRecorder?
+    @State private var audioPlayer: AVAudioPlayer?
+    @State private var audioURL: URL?
     
     
     var body: some View {
@@ -203,64 +203,64 @@ struct recordView: View {
        
     }
     // ファイル書き込み（Data）=============================================================
-        func writingToFile_Da(savedata: [String], savename: String) {
-            // DocumentsフォルダURL取得
-            guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                fatalError("フォルダURL取得エラー")
-            }
-            // 対象のファイルURL取得
-            let fileURL = dirURL.appendingPathComponent(savename)
-            // ファイルの書き込み//JSONEncoderを利用
-            do {
-                let encoder = JSONEncoder()
-                let data: Data = try encoder.encode(savedata)
-                try data.write(to: fileURL)
-            } catch {
-                print("Error: \(error)")
-            }
+    func writingToFile_Da(savedata: [String], savename: String) {
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
         }
-        // =================================================================================
-        
-        // ファイル読み込み（Data）=============================================================
-        func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
-            // DocumentsフォルダURL取得
-            guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                fatalError("フォルダURL取得エラー")
-            }
-            // 対象のファイルURL取得
-            let fileURL = dirURL.appendingPathComponent(savename)
-            // ファイルの読み込み//JSONDecoderを利用
-            do{
-                let fileContents = try Data(contentsOf: fileURL)
-                let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
-                // 読み込んだ内容を戻り値として返す
-                return read_strings
-            }catch{
-                fatalError("ファイル読み込みエラー")
-            }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの書き込み//JSONEncoderを利用
+        do {
+            let encoder = JSONEncoder()
+            let data: Data = try encoder.encode(savedata)
+            try data.write(to: fileURL)
+        } catch {
+            print("Error: \(error)")
         }
-    // =================================================================================
-func startRecording() {
-    let audioSession = AVAudioSession.sharedInstance()
-    do {
-        try audioSession.setCategory(.playAndRecord, mode: .default)
-        try audioSession.setActive(true)
-        let audioFilename = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
-        let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 12000,
-            AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ]
-        audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
-        audioRecorder?.record()
-        isRecording = true
-    } catch {
-        print("Failed to start recording: \(error.localizedDescription)")
-    
     }
-}
+    // =================================================================================
+    // ファイル読み込み（Data）=============================================================
+    func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
+        }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの読み込み//JSONDecoderを利用
+        do{
+            let fileContents = try Data(contentsOf: fileURL)
+            let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
+            // 読み込んだ内容を戻り値として返す
+            return read_strings
+        }catch{
+            fatalError("ファイル読み込みエラー")
+        }
+    }
+    // =================================================================================
+        
     
+    func startRecording() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playAndRecord, mode: .default)
+            try audioSession.setActive(true)
+            let audioFilename = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
+            let settings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: 12000,
+                AVNumberOfChannelsKey: 1,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+            audioRecorder?.record()
+            isRecording = true
+        } catch {
+            print("Failed to start recording: \(error.localizedDescription)")
+            
+        }
+    }
     func stopRecording() {
         audioRecorder?.stop()
         audioRecorder = nil
