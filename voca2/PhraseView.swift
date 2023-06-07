@@ -371,6 +371,37 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")
         }
     }
+    func playaudio(fileName: String) {
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Unable to access document directory")
+            return
+        }
+        
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                //bhgui ued
+                let utterance = AVSpeechUtterance(string: phraseSet2[index])
+                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                utterance.rate = 0.5
+                utterance.volume = playvol
+                synthesiser.speak(utterance)
+            } catch {
+                print("Error creating file: \(error)")
+            }
+        } else {
+            //bh ued
+            audioURL = getDocumentsDirectory().appendingPathComponent("\(phraseSet2[index]).m4a")
+            guard let url = audioURL else { return }
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            } catch {
+                print("Failed to play recorded audio")
+            }
+        }
+    }
     func createButton(index: Int) -> some View {
         Button(action: {
             theText += "\(phraseSet2[index]) "
