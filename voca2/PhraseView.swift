@@ -168,141 +168,67 @@ struct phraseView: View {
                 
                 HStack {
                     VStack {
-                        // 読み上げボタン
-                        Button(action: {
-                            let utterance = AVSpeechUtterance(string: theText)
-                            utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                            utterance.rate = 0.5
-                            utterance.volume = playvol
-                          
-                            synthesiser.speak(utterance)
-                        }) {
-                            Text("読み上げ")
-                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                .foregroundColor(Color.white)
-                                .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                .background(Color(red: 3/255, green: 175/255, blue: 122/255))
-                            // オートスキャンで太さと色が変わる枠
-                                .border(((scan.count == 0 || scan.count == 25) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : Color.black, width: (((scan.count == 0 || scan.count == 25) && scan.waiting == false) ? 6 : 1))
-                        }
                         
-                        // 1列目の定型句ボタン
-                        ForEach(0..<4) { index in
-                            Button(action: {
-                                theText += "\(phraseSet2[index]) "
-//                                buttonVoice[index].volume = playvol
-                                // ボタンアクション時の読み上げ
-//                                buttonVoice[index].play()
-                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
-                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                                utterance.rate = 0.5
-                                utterance.volume = playvol
-                                synthesiser.speak(utterance)
-                            }) {
-                                if(index < phraseSet2.count){
-                                Text("\(phraseSet2[index]) ")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                // オートスキャンで太さと色が変わる枠
-                                    .border(((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? 6 : 1))
-                                    .background(Color.white)
+                        HStack{
+                            // Column 1
+                            VStack {
+                                // 読み上げボタン
+                                Button(action: {
+                                    let utterance = AVSpeechUtterance(string: theText)
+                                    utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                    utterance.rate = 0.5
+                                    utterance.volume = playvol
+                                  
+                                    synthesiser.speak(utterance)
+                                }) {
+                                    Text("読み上げ")
+                                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                        .foregroundColor(Color.white)
+                                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                                        .background(Color(red: 3/255, green: 175/255, blue: 122/255))
+                                    // オートスキャンで太さと色が変わる枠
+                                        .border(((scan.count == 0 || scan.count == 25) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : Color.black, width: (((scan.count == 0 || scan.count == 25) && scan.waiting == false) ? 6 : 1))
+                                }
+                                ForEach(0..<4) { index in
+                                    createButton(index: index)
                                 }
                             }
-                        }
-                    }
-                    
-                    VStack {
-                        // 2列目の定型句ボタン
-                        ForEach(4..<9) { index in
-                            Button(action: {
-                                theText += "\(phraseSet2[index]) "
-                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
-                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                                utterance.rate = 0.5
-                                utterance.volume = playvol
-                                synthesiser.speak(utterance)
-//                                buttonVoice[index].volume = playvol
-//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
-                                
-                            }) {
-                                if(index < phraseSet2.count){
-                                Text("\(phraseSet2[index]) ")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                // オートスキャンで太さと色が変わる枠
-                                    .border(((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? 6 : 1))
-                                    .background(Color.white)
+                            
+                            // Column 2
+                            VStack {
+                                ForEach(4..<9) { index in
+                                    createButton(index: index)
                                 }
                             }
-                        }
-                    }
-                    
-                    VStack {
-                        // 3列目の定型句ボタン
-                        ForEach(9..<14) { index in
-                            Button(action: {
-                                theText += "\(phraseSet2[index]) "
-                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
-                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                                utterance.rate = 0.5
-                                utterance.volume = playvol
-                                synthesiser.speak(utterance)
-//                                buttonVoice[index].volume = playvol
-//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
-                            }) {
-                                if(index < phraseSet2.count){
-                                Text("\(phraseSet2[index]) ")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                // オートスキャンで太さと色が変わる枠
-                                    .border(((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? 6 : 1))
-                                    .background(Color.white)
+                            
+                            // Column 3
+                            VStack {
+                                ForEach(9..<14) { index in
+                                    createButton(index: index)
                                 }
                             }
-                        }
-                    }
-                    
-                    VStack {
-                        // 4列目の定型句ボタン
-                        ForEach(14..<18) { index in
-                            Button(action: {
-                                theText += "\(phraseSet2[index]) "
-                                @State var utterance = AVSpeechUtterance(string: phraseSet2[index])
-                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                                utterance.rate = 0.5
-                                utterance.volume = playvol
-                                synthesiser.speak(utterance)
-//                                buttonVoice[index].volume = playvol
-//                                buttonVoice[index].play() // ボタンアクション時の読み上げ
-                            }) {
-                                if(index < phraseSet2.count){
-                                Text("\(phraseSet2[index])")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                // オートスキャンで太さと色が変わる枠
-                                    .border(((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? 6 : 1))
-                                    .background(Color.white)
+                            
+                            // Column 4
+                            VStack {
+                                ForEach(14..<18) { index in
+                                    createButton(index: index)
+                                }
+                                // 消去ボタン
+                                Button(action: {
+                                    theText = ""
+                                }) {
+                                    Text("消去")
+                                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                        .foregroundColor(Color.white)
+                                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                                        .background(Color(red: 255/255, green: 75/255, blue: 0))
+                                    // オートスキャンで太さと色が変わる枠
+                                        .border(((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? 6 : 1))
                                 }
                             }
+                            }
                         }
-                        
-                        // 消去ボタン
-                        Button(action: {
-                            theText = ""
-                        }) {
-                            Text("消去")
-                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                .foregroundColor(Color.white)
-                                .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                                .background(Color(red: 255/255, green: 75/255, blue: 0))
-                            // オートスキャンで太さと色が変わる枠
-                                .border(((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? 6 : 1))
-                        }
-                    }
+                       
                     
                     // 画面切替ボタン
                     VStack {
@@ -445,6 +371,28 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")
         }
     }
+    func createButton(index: Int) -> some View {
+        Button(action: {
+            theText += "\(phraseSet2[index]) "
+            let utterance = AVSpeechUtterance(string: phraseSet2[index])
+            utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+            utterance.rate = 0.5
+            utterance.volume = playvol
+            synthesiser.speak(utterance)
+        }) {
+            if (index < phraseSet2.count) {
+                Text("\(phraseSet2[index])")
+                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                    .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                    .border(((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : Color.black, width: (((scan.count == index + 1 || scan.count == index + 26) && scan.waiting == false) ? 6 : 1))
+                    .background(Color.white)
+            } else {
+                EmptyView()
+            }
+        }
+    }
+
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
