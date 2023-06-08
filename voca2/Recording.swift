@@ -82,9 +82,9 @@ struct recordView: View {
                         
                         Button(isRecording ? "中止" : "録音開始") {
                                         if isRecording {
-                                            stopRecording()
+                                            stopRecording(phrase: phrase)
                                         } else {
-                                            startRecording()
+                                            startRecording(phrase : phrase)
                                         }
                                     }
                                     .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -240,13 +240,13 @@ struct recordView: View {
     }
     // =================================================================================
         
-    
-    func startRecording() {
+    //録音開始(拡張子がないので注意)
+    func startRecording(phrase : String) {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playAndRecord, mode: .default)
             try audioSession.setActive(true)
-            let audioFilename = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
+            let audioFilename = getDocumentsDirectory().appendingPathComponent(phrase)
             let settings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                 AVSampleRateKey: 12000,
@@ -261,13 +261,14 @@ struct recordView: View {
             
         }
     }
-    func stopRecording() {
+    //録音停止
+    func stopRecording(phrase : String) {
         audioRecorder?.stop()
         audioRecorder = nil
         isRecording = false
-        audioURL = getDocumentsDirectory().appendingPathComponent("\(phrase).m4a")
+        audioURL = getDocumentsDirectory().appendingPathComponent(phrase)
     }
-    
+    //録音再生
     func playRecordedAudio() {
         guard let url = audioURL else { return }
         do {

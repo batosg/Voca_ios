@@ -20,7 +20,9 @@ struct phraseView: View {
     @State var synthesiser = AVSpeechSynthesizer()
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
     @State private var phraseSet2: [String] = []
-    
+    @State private var audioURL: URL?
+    @State private var audioRecorder: AVAudioRecorder?
+    @State private var audioPlayer: AVAudioPlayer?
     private let buttonVoice = [try! AVAudioPlayer(data: NSDataAsset(name: "konnitiwa")!.data),
                                try! AVAudioPlayer(data: NSDataAsset(name: "onakasuita")!.data),
                                try! AVAudioPlayer(data: NSDataAsset(name: "come")!.data),
@@ -371,6 +373,11 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")
         }
     }
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("Unable to access document directory")
@@ -382,20 +389,17 @@ struct phraseView: View {
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 //bhgui ued
-                let utterance = AVSpeechUtterance(string: phraseSet2[index])
+                let utterance = AVSpeechUtterance(string: fileName)
                 utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                 utterance.rate = 0.5
                 utterance.volume = playvol
                 synthesiser.speak(utterance)
-            } catch {
-                print("Error creating file: \(error)")
-            }
+            } 
         } else {
             //bh ued
-            audioURL = getDocumentsDirectory().appendingPathComponent("\(phraseSet2[index]).m4a")
-            guard let url = audioURL else { return }
+            
             do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
                 audioPlayer?.play()
             } catch {
                 print("Failed to play recorded audio")
@@ -404,12 +408,8 @@ struct phraseView: View {
     }
     func createButton(index: Int) -> some View {
         Button(action: {
-            theText += "\(phraseSet2[index]) "
-            let utterance = AVSpeechUtterance(string: phraseSet2[index])
-            utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-            utterance.rate = 0.5
-            utterance.volume = playvol
-            synthesiser.speak(utterance)
+            playaudio(fileName: "\(phraseSet2[index])")
+            theText+=phraseSet2[index]
         }) {
             if (index < phraseSet2.count) {
                 Text("\(phraseSet2[index])")
