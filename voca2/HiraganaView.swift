@@ -15,6 +15,7 @@ struct hiraganaView: View {
     @Binding var screen: String
     @Binding var theText: String
     @Binding var playvol: Float
+    @State var synthesiser = AVSpeechSynthesizer()
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     
@@ -166,7 +167,7 @@ struct hiraganaView: View {
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
                             utterance.volume = playvol
-                            let synthesiser = AVSpeechSynthesizer()
+                            
                             synthesiser.speak(utterance)
                         }) {
                             Text("読み上げ")

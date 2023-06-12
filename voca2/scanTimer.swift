@@ -11,6 +11,8 @@ import AVFoundation
 
 class scanTimer: ObservableObject {
     // 値の更新をパブリッシュする変数にする（これとContentViewでのObservedObjectの宣言により、ContentViewでの観測が可能となる）
+    @State var synthesiser = AVSpeechSynthesizer()
+    @State var playvol: Float = 1.0
     @Published var count: Int = 0  // 定型句VOCA画面のカウント
     @Published var firstCount: Int = 0  // 50音文字盤VOCA画面の行ごとのカウント
     @Published var secondCount: Int = 0  // 50音文字盤VOCA画面のボタン一つずつのカウント
@@ -83,19 +85,31 @@ class scanTimer: ObservableObject {
                              try! AVAudioPlayer(data: NSDataAsset(name: "se_maoudamashii_system35")!.data)]
     
     // 定型句VOCA画面のオートスキャン開始
-    func phraseStart() {
+    func phraseStart(phraseSet2:[String]) {
+        
         self.waiting = false
         self.scanVoice[0].play()
+      
+        print("\(phraseSet2[0])")
+        
         // タイマー起動
-        timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
             self.count += 1
             // オートスキャン時の読み上げ
             if (self.count == 25) {
                 self.scanVoice[0].play()  // 「読み上げ」
             } else if (self.count > 0 && self.count < 19) {
-                self.scanVoice[self.count].play()  // 定型句
+                
+                let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
+                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                utterance.rate = 0.5
+                utterance.volume = self.playvol
+               
+                synthesiser.speak(utterance) // 定型句
+            
             } else if (self.count > 25 && self.count < 44) {
-                self.scanVoice[self.count - 25].play()  // 定型句
+                let utterance = AVSpeechUtterance(string: phraseSet2[self.count-26])
+                self.synthesiser.speak(utterance) // 定型句
             } else if (self.count == 19 || self.count == 44) {
                 self.scanVoice[19].play()  // 「消去」
             } else if (self.count == 20 || self.count == 45) {

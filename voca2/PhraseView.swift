@@ -18,8 +18,9 @@ struct phraseView: View {
     @Binding var playvol: Float
     @Binding var panel: Int
     @State var synthesiser = AVSpeechSynthesizer()
+    @State var phraseSet2: [String] = []
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
-    @State private var phraseSet2: [String] = []
+   
     @State private var audioURL: URL?
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
@@ -154,6 +155,7 @@ struct phraseView: View {
                             // スキャンボタン
                             Button(action: {
                                 phraseScanAction()  // スキャンボタン押下時の処理
+                                
                             }) {
                                 Text("スキャン")
                                     .font(.system(size: UIScreen.main.bounds.width * 0.017, weight: .medium))
@@ -180,7 +182,7 @@ struct phraseView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                  
+                                   
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("読み上げ")
@@ -378,6 +380,7 @@ struct phraseView: View {
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
+    //============================================================================================================================================================================================================================
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("Unable to access document directory")
@@ -406,10 +409,11 @@ struct phraseView: View {
             }
         }
     }
+//    ============================================================================================================================================================================================================================
     func createButton(index: Int) -> some View {
         Button(action: {
             playaudio(fileName: "\(phraseSet2[index])")
-            theText+=phraseSet2[index]
+            theText+=(" "+phraseSet2[index])
         }) {
             if (index < phraseSet2.count) {
                 Text("\(phraseSet2[index])")
@@ -467,7 +471,7 @@ struct phraseView: View {
     func phraseScanAction() {
         if (screen == "phrase") {
             if scan.waiting {
-                scan.phraseStart() // オートスキャン開始
+                scan.phraseStart(phraseSet2: phraseSet2) // オートスキャン開始
             } else {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
@@ -479,10 +483,12 @@ struct phraseView: View {
                     synthesiser.speak(utterance)
                 } else if (scan.count > 0 && scan.count < 19) {
                     theText += "\(phraseSet2[scan.count - 1]) "
-                    buttonVoice[scan.count - 1].play()
+                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 1]))
+                    synthesiser.speak(utterance)
                 } else if (scan.count > 25 && scan.count < 44) {
                     theText += "\(phraseSet2[scan.count - 26])"
-                    buttonVoice[scan.count - 26].play()
+                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 26]))
+                    synthesiser.speak(utterance)
                 } else if (scan.count == 19 || scan.count == 44) {
                     theText = ""
                 } else if (scan.count == 20 || scan.count == 45) {
