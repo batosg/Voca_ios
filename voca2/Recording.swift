@@ -53,13 +53,29 @@ struct recordView: View {
                 .frame(width: 800)
                 //パネルを確認し、そのパネルに応じる配列を書き換える
                 if(panel==0){
-                    Text("\(phraseSet1[arrnum])")
+                    Text("\(phraseSet1[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                        .border(Color.black)
+                        .background(Color.white)
                 }else if(panel==1){
-                    Text("\(phraseSet6[arrnum])")
+                    Text("\(phraseSet6[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                        .border(Color.black)
+                        .background(Color.white)
                 }else if(panel==2){
-                    Text("\(phraseSet7[arrnum])")
+                    Text("\(phraseSet7[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                        .border(Color.black)
+                        .background(Color.white)
                 }else if(panel==3){
-                    Text("\(phraseSet8[arrnum])")
+                    Text("\(phraseSet8[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+                        .border(Color.black)
+                        .background(Color.white)
                 }
                 TextField("表示名を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
