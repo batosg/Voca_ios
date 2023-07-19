@@ -85,12 +85,12 @@ class scanTimer: ObservableObject {
                              try! AVAudioPlayer(data: NSDataAsset(name: "se_maoudamashii_system35")!.data)]
     
     // 定型句VOCA画面のオートスキャン開始
-    func phraseStart(phraseSet2:[String]) {
+    func phraseStart(phraseSet2:[String],speed: Double) {
         
         self.waiting = false
         self.scanVoice[0].play()
       
-        print("\(phraseSet2[0])")
+        print("スキャン開始")
         
         // タイマー起動
         timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
@@ -102,7 +102,11 @@ class scanTimer: ObservableObject {
                 
                 let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                 utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                utterance.rate = 0.5
+                if(speed<0.5){
+                    utterance.rate = 0.5
+                }else{
+                    utterance.rate = Float(speed)
+                }
                 utterance.volume = self.playvol
                
                 synthesiser.speak(utterance) // 定型句
@@ -278,6 +282,7 @@ class scanTimer: ObservableObject {
                         self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
                         self.scanVoice[self.count].play()  // 定型句
+                        
                     } else if (self.count > 25 && self.count < 44) {
                         self.scanVoice[self.count - 25].play()  // 定型句
                     } else if (self.count == 19 || self.count == 44) {

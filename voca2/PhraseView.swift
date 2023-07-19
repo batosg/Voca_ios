@@ -471,13 +471,15 @@ struct phraseView: View {
     func phraseScanAction() {
         if (screen == "phrase") {
             if scan.waiting {
-                scan.phraseStart(phraseSet2: phraseSet2) // オートスキャン開始
+                
+                scan.phraseStart(phraseSet2: phraseSet2,speed: 0.83-(scan.speed)/3) // オートスキャン開始 ,早さの設定
             } else {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
                     let utterance = AVSpeechUtterance(string: theText)
                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                    utterance.rate = 0.5
+                    utterance.rate = 1.0
+                    
                     utterance.volume = playvol
                     let synthesiser = AVSpeechSynthesizer()
                     synthesiser.speak(utterance)
