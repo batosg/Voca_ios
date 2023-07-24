@@ -16,6 +16,7 @@ struct hiraganaView: View {
     @Binding var theText: String
     @Binding var playvol: Float
     @State var synthesiser = AVSpeechSynthesizer()
+    @State var phraseSet2: [String] = []
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     
@@ -480,7 +481,7 @@ struct hiraganaView: View {
                             ZStack {
                                 Button(action: {
                                     if (scan.speed > 0.3) {
-                                        scan.speedUp() // 加速
+                                        scan.speedUp(phraseset: phraseSet2) // 加速
                                     }
                                 }) {
                                     Text("-")
@@ -513,7 +514,7 @@ struct hiraganaView: View {
                             ZStack {
                                 Button(action: {
                                     if (scan.speed < 1.9) {
-                                        scan.speedDown() // 減速
+                                        scan.speedDown(phraseset: phraseSet2) // 減速
                                     }
                                 }) {
                                     Text("+")
@@ -669,10 +670,10 @@ struct hiraganaView: View {
                         }
                     } else if (scan.selected == "speedVolume") {
                         if (scan.secondCount == 0 || scan.secondCount == 4) {
-                            scan.speedDown()  // 減速
+                            scan.speedDown(phraseset: phraseSet2)  // 減速
                             scan.stop()  // オートスキャン終了
                         } else if (scan.secondCount == 1 || scan.secondCount == 5) {
-                            scan.speedUp()  // 加速
+                            scan.speedUp(phraseset: phraseSet2)  // 加速
                             scan.stop()  // オートスキャン終了
                         } else if (scan.secondCount == 2 || scan.secondCount == 6) {
                             playvol -= 0.1  // 音量減

@@ -21,6 +21,8 @@ struct phraseView: View {
     @State var phraseSet2: [String] = []
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
    
+    @State var onsei:Int=0
+    private let buttonTexts = ["読み上げ\n\n音声", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
     @State private var audioURL: URL?
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
@@ -52,16 +54,20 @@ struct phraseView: View {
                     VStack {
                         // 読み上げ切替ボタン
                         Button(action: {
-                            print("音声")
-                        }) {
-                            Text("読み上げ\n\n音声")
-                                .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
-                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
+                                    onsei = (onsei + 1) % buttonTexts.count
+                            if (scan.waiting==true){
+                                print("z")
+                            }
                                 
-                        }
+                                
+                                }) {
+                                    Text(buttonTexts[onsei])
+                                        .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                        .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                        .cornerRadius(15.0)
+                                }
                         .padding(/*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
                         
                         // 設定ボタン
@@ -114,57 +120,12 @@ struct phraseView: View {
                         
                         // スキャンボタン
                         ZStack {
-                            Button(action: {
-                                phraseScanAction()  // スキャンボタン押下時の処理
-                            }) {
-                                Text("スキャン")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.017, weight: .medium))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
-                            }
-                            .keyboardShortcut(.defaultAction)
+                          
+                           
                             
-                            // スキャンボタン
-                            Button(action: {
-                                phraseScanAction()  // スキャンボタン押下時の処理
-                            }) {
-                                Text("スキャン")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.017, weight: .medium))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
-                            }
-                            .keyboardShortcut(.space, modifiers: [])
-                            
-                            // スキャンボタン
-                            Button(action: {
-                                phraseScanAction()  // スキャンボタン押下時の処理
-                            }) {
-                                Text("スキャン")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.017, weight: .medium))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
-                            }
-                            .keyboardShortcut("1", modifiers: [])
-                            
-                            // スキャンボタン
-                            Button(action: {
-                                phraseScanAction()  // スキャンボタン押下時の処理
-                                
-                            }) {
-                                Text("スキャン")
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.017, weight: .medium))
-                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
-                            }
-                            .keyboardShortcut("3", modifiers: [])
+                            createScanButton(shortcut: .space) // スキャンボタン
+                            createScanButton(shortcut: "1") // スキャンボタン
+                            createScanButton(shortcut: "3") // スキャンボタン
                         }
                     }
                 }
@@ -256,7 +217,7 @@ struct phraseView: View {
                                 // 速度変更ボタン（加速）
                                 Button(action: {
                                     if (scan.speed > 0.3) {
-                                        scan.speedUp()  // 加速
+                                        scan.speedUp(phraseset: phraseSet2)  // 加速
                                     }
                                 }) {
                                     Text("-")
@@ -289,7 +250,7 @@ struct phraseView: View {
                                 // 速度変更ボタン（減速）
                                 Button(action: {
                                     if (scan.speed < 1.9) {
-                                        scan.speedDown()  // 減速
+                                        scan.speedDown(phraseset: phraseSet2)  // 減速
                                     }
                                 }) {
                                     Text("+")
@@ -409,7 +370,23 @@ struct phraseView: View {
             }
         }
     }
-//    ============================================================================================================================================================================================================================
+//  ===================================================================================================================================================
+    private func createScanButton(shortcut: KeyEquivalent) -> some View {
+            return Button(action: {
+                
+                    phraseScanAction() // スキャンボタン押下時の処理
+                
+            }) {
+                Text("スキャン")
+                    .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                    .cornerRadius(15.0)
+            }
+            .keyboardShortcut(shortcut, modifiers: [])
+        }
+    //    ============================================================================================================================================================================================================================
     func createButton(index: Int) -> some View {
         Button(action: {
             playaudio(fileName: "\(phraseSet2[index])")
@@ -472,7 +449,7 @@ struct phraseView: View {
         if (screen == "phrase") {
             if scan.waiting {
                 
-                scan.phraseStart(phraseSet2: phraseSet2,speed: 0.83-(scan.speed)/3) // オートスキャン開始 ,早さの設定
+                scan.phraseStart(phraseSet2: phraseSet2,speed: 0.83-(scan.speed)/3,mode:onsei) // オートスキャン開始 ,早さの設定
             } else {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
@@ -496,9 +473,9 @@ struct phraseView: View {
                 } else if (scan.count == 20 || scan.count == 45) {
                     screen = "hiragana"  //50音文字盤（清音ひらがな）への遷移
                 } else if ((scan.count == 21 || scan.count == 46) && scan.speed < 1.9) {
-                    scan.speedUp()
+                    scan.speedUp(phraseset: phraseSet2)
                 } else if ((scan.count == 22 || scan.count == 47) && scan.speed > 0.3) {
-                    scan.speedDown()
+                    scan.speedDown(phraseset: phraseSet2)
                 } else if ((scan.count == 23 || scan.count == 48) && playvol < 10) {
                     playvol += 0.1
                 } else if ((scan.count == 24 || scan.count == 49) && playvol > 0) {
