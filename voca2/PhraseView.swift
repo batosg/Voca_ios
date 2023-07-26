@@ -56,7 +56,7 @@ struct phraseView: View {
                         Button(action: {
                                     onsei = (onsei + 1) % buttonTexts.count
                             if (scan.waiting==true){
-                                print("z")
+                                print("change")
                             }
                                 
                                 
