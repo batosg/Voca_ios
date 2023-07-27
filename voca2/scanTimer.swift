@@ -10,8 +10,11 @@ import SwiftUI
 import AVFoundation
 
 class scanTimer: ObservableObject {
+    @State private var isSpeaking = false
     // 値の更新をパブリッシュする変数にする（これとContentViewでのObservedObjectの宣言により、ContentViewでの観測が可能となる）
     @State var synthesiser = AVSpeechSynthesizer()
+    @State var audioPlayer: AVAudioPlayer?
+    @State var isPlaying: Bool = false
     @State var playvol: Float = 1.0
     @Published var count: Int = 0  // 定型句VOCA画面のカウント
     @Published var firstCount: Int = 0  // 50音文字盤VOCA画面の行ごとのカウント
@@ -86,7 +89,6 @@ class scanTimer: ObservableObject {
     
     // 定型句VOCA画面のオートスキャン開始
     func phraseStart(phraseSet2:[String],speed: Double,mode:Int) {
-        
         self.waiting = false
         self.scanVoice[0].play()
       
@@ -96,7 +98,10 @@ class scanTimer: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
             self.count += 1
             if(mode==0){
-                
+                if synthesiser.isSpeaking {                             //音声が重なることがなくなる
+                            synthesiser.stopSpeaking(at: .immediate)
+                            isSpeaking = false
+                        }
                 // オートスキャン時の読み上げ
                 if (self.count == 25) {
                     self.scanVoice[0].play()  // 「読み上げ」
@@ -130,7 +135,9 @@ class scanTimer: ObservableObject {
                 }
             }else if(mode==1){
                 if(self.count<48){
+                    
                     self.scanVoice[23].play()
+//                    stopAudio()
                 }else{
                     self.stop()
                 }
@@ -279,8 +286,12 @@ class scanTimer: ObservableObject {
         self.firstCount = 0
         self.secondCount = 0
         self.selected = ""
+        
     }
-    
+    func stopAudio() {
+            audioPlayer?.stop()
+            isPlaying = false
+        }
     // 減速
     func speedDown(phraseset:[String]) {
         self.speed += 0.2
