@@ -11,9 +11,11 @@ import AVFoundation
 
 class scanTimer: ObservableObject {
     @State private var isSpeaking = false
+    @State private var activePlayerIndex: Int?
+    @State var audioPlayer: AVAudioPlayer?
     // 値の更新をパブリッシュする変数にする（これとContentViewでのObservedObjectの宣言により、ContentViewでの観測が可能となる）
     @State var synthesiser = AVSpeechSynthesizer()
-    @State var audioPlayer: AVAudioPlayer?
+    //@State var audioPlayer: AVAudioPlayer
     @State var isPlaying: Bool = false
     @State var playvol: Float = 1.0
     @Published var count: Int = 0  // 定型句VOCA画面のカウント
@@ -136,8 +138,10 @@ class scanTimer: ObservableObject {
             }else if(mode==1){
                 if(self.count<48){
                     
+                    self.scanVoice[23].stop()
+                     
                     self.scanVoice[23].play()
-//                    stopAudio()
+
                 }else{
                     self.stop()
                 }
@@ -301,18 +305,22 @@ class scanTimer: ObservableObject {
                 timer.invalidate()
                 timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { _ in
                     self.count += 1
+                    //音声が重なる問題の解決
+                    if self.synthesiser.isSpeaking{
+                        self.synthesiser.stopSpeaking(at: .immediate)
+                        self.isSpeaking=false
+                    }
                     // オートスキャン時の読み上げ
                     if (self.count == 25) {
                         self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
- //                       self.scanVoice[self.count].play()  // 定型句
+ 
                         let utterance = AVSpeechUtterance(string: phraseset[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                         utterance.volume = self.playvol
                         self.synthesiser.speak(utterance) // 定型句
                     } else if (self.count > 25 && self.count < 44) {
-//                        self.scanVoice[self.count - 25].play()  // 定型句
-                        let utterance = AVSpeechUtterance(string: phraseset[self.count-25])
+                        let utterance = AVSpeechUtterance(string: phraseset[self.count-26])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                         utterance.volume = self.playvol
                         self.synthesiser.speak(utterance) // 定型句
@@ -414,25 +422,29 @@ class scanTimer: ObservableObject {
                     timer.invalidate()
                     timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { _ in
                         self.count += 1
+                        //音声が重なる問題の解決
+                        if self.synthesiser.isSpeaking{
+                            self.synthesiser.stopSpeaking(at: .immediate)
+                            self.isSpeaking=false
+                        }
                         // オートスキャン時の読み上げ
                         if (self.count == 25) {
                             self.scanVoice[0].play()  // 「読み上げ」
                         } else if (self.count > 0 && self.count < 19) {
-    //                        self.scanVoice[self.count].play()  // 定型句
+ 
                             let utterance = AVSpeechUtterance(string: phraseset[self.count-1])
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                            
                             utterance.volume = self.playvol
                             
                             self.synthesiser.speak(utterance) // 定型句
                             
                         } else if (self.count > 25 && self.count < 44) {
-                            let utterance = AVSpeechUtterance(string: phraseset[self.count-25])
+                            
+                            let utterance = AVSpeechUtterance(string: phraseset[self.count-26])
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                            
                             utterance.volume = self.playvol
-                            
                             self.synthesiser.speak(utterance) // 定型句
+                            
                         } else if (self.count == 19 || self.count == 44) {
                             self.scanVoice[19].play()  // 「消去」
                         } else if (self.count == 20 || self.count == 45) {

@@ -3,7 +3,7 @@
 //  voca2
 //
 //  Created by GANBAT BATORGIL on 2023/04/06.
-//testzazazazazazazaza
+
 
 
 import Foundation
@@ -23,6 +23,10 @@ struct phraseView: View {
    
     @State var onsei:Int=0
     private let buttonTexts = ["読み上げ\n\n音声", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
+    
+    @State var scanNum:Int=0
+    private let scanTexts = ["スキャン範囲\n\n機能あり","スキャン範囲\n定型句\nのみ"]
+    
     @State private var audioURL: URL?
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
@@ -107,22 +111,19 @@ struct phraseView: View {
                     // スキャン範囲切替ボタン
                     VStack {
                         Button(action: {
-                            print("機能あり")
-                        }) {
-                            Text("スキャン\n範囲\n\n機能あり")
-                                .font(.system(size: UIScreen.main.bounds.width * 0.015, weight: .medium))
-                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                .cornerRadius(/*@START_MENU_TOKEN@*/15.0/*@END_MENU_TOKEN@*/)
-                        }
+                                    scanNum = (scanNum + 1) % scanTexts.count
+                            
+                                }) {
+                                    Text(scanTexts[scanNum])
+                                        .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                        .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                        .cornerRadius(15.0)
+                                }
                         .padding(/*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
-                        
                         // スキャンボタン
                         ZStack {
-                          
-                           
-                            
                             createScanButton(shortcut: .space) // スキャンボタン
                             createScanButton(shortcut: "1") // スキャンボタン
                             createScanButton(shortcut: "3") // スキャンボタン
@@ -333,7 +334,7 @@ struct phraseView: View {
                 }
             }
         }.onAppear(){
-            phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")
+            phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")//配列を代入
         }
     }
     func getDocumentsDirectory() -> URL {
@@ -455,7 +456,7 @@ struct phraseView: View {
                 if (scan.count == 0 || scan.count == 25) {
                     let utterance = AVSpeechUtterance(string: theText)
                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                    utterance.rate = 1.0
+                    utterance.rate = 0.5
                     
                     utterance.volume = playvol
                     let synthesiser = AVSpeechSynthesizer()
