@@ -142,7 +142,7 @@ struct recordView: View {
                     }
                  
                     Button(action: {
-                        if (selection==2){
+                      
                             if(phrase == ""){
                                 showingAlert = true
                             }
@@ -168,8 +168,8 @@ struct recordView: View {
                                     phraseSet8 = readFromFile_Da(savename: "ps3.dat")
                                     
                                 }
-                            }
-                        }else if (selection==1){
+                            
+                            };if (selection==1){
                             if(phrase==""){
                                 showingAlert=true
                             }
