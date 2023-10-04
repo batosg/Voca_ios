@@ -345,7 +345,7 @@ struct phraseView: View {
     //============================================================================================================================================================================================================================
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            print("Unable to access document directory")
+            print("ファイルが見つかりませんでした")
             return
         }
         
@@ -353,7 +353,7 @@ struct phraseView: View {
         
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
-                //bhgui ued
+                //存在しない場合
                 let utterance = AVSpeechUtterance(string: fileName)
                 utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                 utterance.rate = 0.5
@@ -361,8 +361,7 @@ struct phraseView: View {
                 synthesiser.speak(utterance)
             } 
         } else {
-            //bh ued
-            
+            //存在する場合
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
                 audioPlayer?.play()

@@ -28,7 +28,7 @@ struct recordView: View {
     
     @State private var phrase = ""
     @State private var readphr = ""
-    let pick = ["録音", "合成音声"]
+    let pick = ["録音", "合成音声","オリジナル"]
     @State private var selection = 0
     @State private var phraseSet4: [String] = []
     @State private var showingAlert = false
@@ -120,15 +120,7 @@ struct recordView: View {
                                     .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                                     .border(Color.black)
                                     .disabled(audioURL == nil)
-                        Button("ファイル"){
-                            
-                            print(getDocumentsDirectory())
-                        }.font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
-                        
+                      
                     }else if(selection == 1){
                         Button(action: {
                             @State var utterance = AVSpeechUtterance(string: readphr)
@@ -148,32 +140,41 @@ struct recordView: View {
                         }
                         
                     }
-                    //Alert message
+                 
                     Button(action: {
-                        if(phrase == ""){
-                            showingAlert = true
-                        }
-                        else{
-                            //書き込んでから読み込む（保存）
-                            if(panel==0){
-                                phraseSet1[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
-                                phraseSet1 = readFromFile_Da(savename: "ps0.dat")
-                            }else if(panel==1){
-                                
-                                phraseSet6[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
-                                phraseSet6 = readFromFile_Da(savename: "ps1.dat")
-                            }else if(panel==2){
-                                
-                                phraseSet7[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
-                                phraseSet7 = readFromFile_Da(savename: "ps2.dat")
-                            }else if(panel==3){
-                                phraseSet8[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
-                                phraseSet8 = readFromFile_Da(savename: "ps3.dat")
-                               
+                        if (selection==2){
+                            if(phrase == ""){
+                                showingAlert = true
+                            }
+                            else{
+                                //書き込んでから読み込む（保存）
+                                if(panel==0){
+                                    phraseSet1[arrnum] = phrase
+                                    writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
+                                    phraseSet1 = readFromFile_Da(savename: "ps0.dat")
+                                }else if(panel==1){
+                                    
+                                    phraseSet6[arrnum] = phrase
+                                    writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
+                                    phraseSet6 = readFromFile_Da(savename: "ps1.dat")
+                                }else if(panel==2){
+                                    
+                                    phraseSet7[arrnum] = phrase
+                                    writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
+                                    phraseSet7 = readFromFile_Da(savename: "ps2.dat")
+                                }else if(panel==3){
+                                    phraseSet8[arrnum] = phrase
+                                    writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
+                                    phraseSet8 = readFromFile_Da(savename: "ps3.dat")
+                                    
+                                }
+                            }
+                        }else if (selection==1){
+                            if(phrase==""){
+                                showingAlert=true
+                            }
+                            else{
+                                self.writingToWord_Da(savedata: readphr, savename: "\(phrase)")
                             }
                         }
                     }) {
@@ -184,9 +185,19 @@ struct recordView: View {
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
                     }   .alert(isPresented: $showingAlert) {
+                        //Alert message
                         Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
                             }
+                    Button("ファイル"){
+                        
+                        print(getDocumentsDirectory())
+                    }.font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                        .border(Color.black)
                     
+
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
                     Button(action: {
@@ -217,6 +228,23 @@ struct recordView: View {
             
         }
        
+    }
+    // ファイル書き込み（Data）=============================================================
+    func writingToWord_Da(savedata: String, savename: String) {
+        // DocumentsフォルダURL取得
+        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("フォルダURL取得エラー")
+        }
+        // 対象のファイルURL取得
+        let fileURL = dirURL.appendingPathComponent(savename)
+        // ファイルの書き込み//JSONEncoderを利用
+        do {
+            let encoder = JSONEncoder()
+            let data: Data = try encoder.encode(savedata)
+            try data.write(to: fileURL)
+        } catch {
+            print("Error: \(error)")
+        }
     }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {

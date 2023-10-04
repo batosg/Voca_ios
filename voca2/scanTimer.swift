@@ -130,7 +130,7 @@ class scanTimer: ObservableObject {
                 } else if (self.count == 21 || self.count == 46) {
                     self.scanVoice[21].play()  // 「早く」
                 } else if (self.count == 22 || self.count == 47) {
-                    self.scanVoice[22].play()  // 「遅く」
+                    self.scanVoice[22].play()  // 「遅く」1
                 } else if (self.count > 49) {
                     self.stop()  // 2周で終了
                     print("終")
