@@ -77,19 +77,20 @@ struct recordView: View {
                         .border(Color.black)
                         .background(Color.white)
                 }
-                TextField("表示名を入力", text: $phrase)
+                TextField("表示文字列を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                     .font(.system(size: 50))
                     .frame(width: 600)
-                
+                    .lineLimit(1) // Limit the number of lines to 1
+
                 if(selection == 1){
-                    TextField("流れる音声を入力", text: $readphr)
+                    TextField("読み上げる文字列を入力", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .font(.system(size: 50))
                         .frame(width: 600)
-                    
+                        .lineLimit(1) // Limit the number of lines to 1
                 }
                 VStack{
                     if(selection == 0){
@@ -169,12 +170,15 @@ struct recordView: View {
                                     
                                 }
                             
-                            };if (selection==1){
+                            }
+                        if (selection==1){
                             if(phrase==""){
                                 showingAlert=true
                             }
                             else{
-                                self.writingToWord_Da(savedata: readphr, savename: "\(phrase)")
+                               
+                              
+                                self.writingToFile_Da(savedata: [readphr], savename: "\(phrase)")
                             }
                         }
                     }) {
@@ -228,23 +232,6 @@ struct recordView: View {
             
         }
        
-    }
-    // ファイル書き込み（Data）=============================================================
-    func writingToWord_Da(savedata: String, savename: String) {
-        // DocumentsフォルダURL取得
-        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("フォルダURL取得エラー")
-        }
-        // 対象のファイルURL取得
-        let fileURL = dirURL.appendingPathComponent(savename)
-        // ファイルの書き込み//JSONEncoderを利用
-        do {
-            let encoder = JSONEncoder()
-            let data: Data = try encoder.encode(savedata)
-            try data.write(to: fileURL)
-        } catch {
-            print("Error: \(error)")
-        }
     }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {

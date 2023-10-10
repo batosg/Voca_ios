@@ -19,6 +19,8 @@ struct phraseView: View {
     @Binding var panel: Int
     @State var synthesiser = AVSpeechSynthesizer()
     @State var phraseSet2: [String] = []
+    @State var mytextArray:[String]=[]
+    @State var mytext:String=""
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
    
     @State var onsei:Int=0
@@ -350,25 +352,44 @@ struct phraseView: View {
         }
         
         let fileURL = documentDirectory.appendingPathComponent(fileName)
-        
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            do {
-                //存在しない場合
-                let utterance = AVSpeechUtterance(string: fileName)
-                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                utterance.rate = 0.5
-                utterance.volume = playvol
-                synthesiser.speak(utterance)
-            } 
-        } else {
-            //存在する場合
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
-                audioPlayer?.play()
-            } catch {
-                print("Failed to play recorded audio")
+        //録音ファイルまたはテキストファイルが存在しない場合は読み上げ
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                do {
+                    let utterance = AVSpeechUtterance(string: fileName)
+                    utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                    utterance.rate = 0.5
+                    utterance.volume = playvol
+                    synthesiser.speak(utterance)
+                }
+                //テキストファイルが存在する場合
+            } else {
+                if(isTextFile(fileURL:fileURL)==true){
+                    do{
+                        print(fileName)
+                       
+                        
+                        //print("File Contents:", String(data: fileContents, encoding: .utf8) ?? "Unable to convert data to string")
+
+                        let mytextArray = self.readFromFile_Da(savename: fileName)
+                        let mytext = mytextArray.joined(separator: "") //配列をStringに変換
+                        let utterance = AVSpeechUtterance(string: mytext)
+                        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                        utterance.rate = 0.5
+                        utterance.volume = playvol
+                        synthesiser.speak(utterance)
+                        print("Text file found")
+                   }
+                }else{
+                    //録音ファイルが存在する場合
+                    
+                    do {
+                        audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+                        audioPlayer?.play()
+                    } catch {
+                        print("ファイルを再生できませんでした")
+                    }
+                }
             }
-        }
     }
 //  ===================================================================================================================================================
     private func createScanButton(shortcut: KeyEquivalent) -> some View {
@@ -404,7 +425,16 @@ struct phraseView: View {
             }
         }
     }
-
+    func isTextFile(fileURL: URL) -> Bool {
+        do {
+            let fileContent = try String(contentsOf: fileURL)
+            // If decoding as String succeeds, it's likely a text file
+            return true
+        } catch {
+            // Failed to decode as String, may not be a text file
+            return false
+        }
+    }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
@@ -423,7 +453,7 @@ struct phraseView: View {
         }
     }
     // =================================================================================
-
+   
     // ファイル読み込み（Data）=============================================================
     func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
         // DocumentsフォルダURL取得
@@ -438,10 +468,10 @@ struct phraseView: View {
             let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
             // 読み込んだ内容を戻り値として返す
             return read_strings
-        }catch{
-            fatalError("ファイル読み込みエラー")
-
-        }
+        } catch{
+            print("Error reading file:", error)
+                    return []  // Return an empty array or handle the error accordingly
+                }
     }
     // =================================================================================
     

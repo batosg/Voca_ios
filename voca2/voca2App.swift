@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-//Thread 1: signal SIGTERMというエラーが出る原因はSimulatorを正しく終了していないため（解決：終了するとき[command+Q]）
+//Thread 1: signal SIGTERMエラーが出る原因はSimulatorを正しく終了していないため（解決：終了するとき[command+Q]）
 struct voca2App: App {
 
     var body: some Scene {
