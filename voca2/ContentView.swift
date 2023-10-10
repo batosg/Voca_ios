@@ -55,7 +55,7 @@ struct ContentView: View {
         }
     }
     
-    //ファイルを存在しているか確認し、なかったい場合作る
+    //ファイルを存在しているか確認し、なかったい場合には作成する
     func checkAndCreateFile(fileName: String, initialContent: [String]) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("Unable to access document directory")
@@ -69,34 +69,15 @@ struct ContentView: View {
             
             do {
                 try content.write(to: fileURL, atomically: true, encoding: .utf8)
-                print("File created successfully.")
+                print("File created successfully")
             } catch {
                 print("Error creating file: \(error)")
             }
         } else {
-            print("File already exists.")
+            print("File already exists")
         }
     }
 
-    // ファイル読み込み（Data）=============================================================
-    func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
-        // DocumentsフォルダURL取得
-        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("フォルダURL取得エラー")
-        }
-        // 対象のファイルURL取得
-        let fileURL = dirURL.appendingPathComponent(savename)
-        // ファイルの読み込み//JSONDecoderを利用
-        do{
-            let fileContents = try Data(contentsOf: fileURL)
-            let read_strings = try JSONDecoder().decode([String].self, from: fileContents)
-            // 読み込んだ内容を戻り値として返す
-            return read_strings
-        }catch{
-            fatalError("ファイル読み込みエラー")
-            
-        }
-    }
     // =================================================================================
 }
 

@@ -435,25 +435,7 @@ struct phraseView: View {
             return false
         }
     }
-    // ファイル書き込み（Data）=============================================================
-    func writingToFile_Da(savedata: [String], savename: String) {
-        // DocumentsフォルダURL取得
-        guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("フォルダURL取得エラー")
-        }
-        // 対象のファイルURL取得
-        let fileURL = dirURL.appendingPathComponent(savename)
-        // ファイルの書き込み//JSONEncoderを利用
-        do {
-            let encoder = JSONEncoder()
-            let data: Data = try encoder.encode(savedata)
-            try data.write(to: fileURL)
-        } catch {
-            print("Error: \(error)")
-        }
-    }
-    // =================================================================================
-   
+ 
     // ファイル読み込み（Data）=============================================================
     func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
         // DocumentsフォルダURL取得
