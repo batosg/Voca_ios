@@ -43,6 +43,8 @@ struct ContentView: View {
             Panel2(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
         }else if (currentScreen == "Panel3") {
             Panel3(screen: $currentScreen,panel:$panelnum, arrnum: $arrnum, phraseSet1:$phraseSet1,phraseSet6:$phraseSet6,phraseSet7:$phraseSet7,phraseSet8:$phraseSet8)
+        }else if (currentScreen == "logview") {
+            LogView(screen:$currentScreen)
         }
          VStack{
         }.onAppear{
@@ -52,6 +54,7 @@ struct ContentView: View {
             checkAndCreateFile(fileName: "ps1.dat",initialContent: ["ペン", "ノート", "はさみ", "けしゴム", "えんぴつ", "シャープペンシル", "ホチキス", "リボン", "マーカー", "クリアファイル", "のり", "カッター", "シート", "テープ", "シール", "クレヨン", "ボールペン", "シャープナー"])
             checkAndCreateFile(fileName: "ps2.dat",initialContent: ["いぬ", "ねこ", "とり", "さかな", "とら", "おおかみ", "さる", "ぞう", "ひつじ", "うし", "うま", "うさぎ", "くま", "へび", "かめ", "きつね", "しか", "ちょう"])
             checkAndCreateFile(fileName: "ps3.dat",initialContent: ["にほん", "アメリカ", "カナダ", "イギリス", "フランス", "ドイツ", "ロシア", "ブラジル", "オーストラリア", "中国", "韓国", "インド", "スペイン", "イタリア", "メキシコ", "インドネシア", "トルコ", "南アフリカ"])
+            checkAndCreateFile(fileName: "logdata.txt",initialContent:[])
         }
     }
     
@@ -69,12 +72,12 @@ struct ContentView: View {
             
             do {
                 try content.write(to: fileURL, atomically: true, encoding: .utf8)
-                print("File created successfully")
+                print("File:\(fileName) created successfully")
             } catch {
-                print("Error creating file: \(error)")
+                print("Error creating file:\(fileName) \(error)")
             }
         } else {
-            print("File already exists")
+            print("\(fileName) already exists")
         }
     }
 

@@ -24,11 +24,11 @@ struct optionView: View {
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
 
-  
+   
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     var body: some View {
-        
+       
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
             
@@ -49,7 +49,7 @@ struct optionView: View {
                                     screen="option"
                                 }
                             }) {
-                                Text(" Panel"+" \(index)")
+                                Text(" パネル"+" \(index+1)")
                                     .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                     .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                     .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
@@ -158,7 +158,17 @@ struct optionView: View {
                 }
                 VStack{
                 
-                 
+                    Button(action: {
+                        screen="logview"
+                        
+                    }) {
+                        Text("ログ")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
                     // 設定を初期化するボタン
                     Button(action: {
                         
@@ -194,10 +204,10 @@ struct optionView: View {
                 }
             }
         }.onAppear(){
-            
             phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
         }
     }
+   
     func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
             do {
                 let sourceData = try Data(contentsOf: sourceURL)

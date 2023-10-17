@@ -38,12 +38,18 @@ struct recordView: View {
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
     @State private var audioURL: URL?
-    
+    @State private var word: String = ""
     
     var body: some View {
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
             VStack{
+                Text("カストマイズ画面")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .multilineTextAlignment(.center)
+        
+             
                 Picker(selection: $selection, label:Text("選択")) {
                     ForEach(0 ..< pick.count) { num in
                         Text(self.pick[num])
@@ -51,41 +57,48 @@ struct recordView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 800)
-                //パネルを確認し、そのパネルに応じる配列を書き換える
                 if(panel==0){
+                    
                     Text("\(phraseSet1[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+                   
+                    
                 }else if(panel==1){
                     Text("\(phraseSet6[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+                    
                 }else if(panel==2){
                     Text("\(phraseSet7[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
-                }else if(panel==3){
+                                    }else if(panel==3){
                     Text("\(phraseSet8[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+                    
                 }
+                
                 TextField("表示文字列を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                     .font(.system(size: 50))
                     .frame(width: 600)
                     .lineLimit(1) // Limit the number of lines to 1
+                //パネルを確認し、そのパネルに応じる配列を書き換える
+               
 
                 if(selection == 1){
-                    TextField("読み上げる文字列を入力", text: $readphr)
+                    TextField("読み上げ用テキスト", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .font(.system(size: 50))
@@ -218,6 +231,7 @@ struct recordView: View {
                             screen="Panel3"
                      
                         }
+                     
                     }) {
                         Text("戻る")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -225,14 +239,17 @@ struct recordView: View {
                             .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
-                    }
+                                            }
                     
                 }
+                Spacer()
             }
+            
             
         }
        
     }
+    
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得

@@ -15,7 +15,7 @@ struct hiraganaView: View {
     @Binding var screen: String
     @Binding var theText: String
     @Binding var playvol: Float
-    @State var synthesiser = AVSpeechSynthesizer()
+    let synthesiser = AVSpeechSynthesizer()
     @State var phraseSet2: [String] = []
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
@@ -205,7 +205,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index]) ")
@@ -231,7 +231,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index]) ")
@@ -257,7 +257,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index]) ")
@@ -285,7 +285,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -311,7 +311,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -337,7 +337,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -365,7 +365,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                   
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -391,7 +391,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                   
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -417,7 +417,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -443,7 +443,7 @@ struct hiraganaView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                    let synthesiser = AVSpeechSynthesizer()
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("\(scan.hiraganaSet[index])")
@@ -638,7 +638,7 @@ struct hiraganaView: View {
                             let utterance = AVSpeechUtterance(string: theText)
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
-                            let synthesiser = AVSpeechSynthesizer()
+                           
                             synthesiser.speak(utterance)
                             scan.stop()  // オートスキャン終了
                         } else if (scan.secondCount == 3 || scan.secondCount == 7) {
@@ -652,7 +652,7 @@ struct hiraganaView: View {
                             let utterance = AVSpeechUtterance(string: scan.hiraganaSet[scan.secondCount + scan.line])
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
-                            let synthesiser = AVSpeechSynthesizer()
+                            
                             synthesiser.speak(utterance)
                             scan.stop()  // オートスキャン終了
                         } else if (scan.secondCount >= 5 && scan.secondCount <= 9 && scan.secondCount - 5 + scan.line != 49) {
@@ -661,7 +661,7 @@ struct hiraganaView: View {
                             let utterance = AVSpeechUtterance(string: scan.hiraganaSet[scan.secondCount - 5 + scan.line])
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
-                            let synthesiser = AVSpeechSynthesizer()
+                            
                             synthesiser.speak(utterance)
                             scan.stop()  // オートスキャン終了
                         } else if (scan.line == 45 && (scan.secondCount == 4 || scan.secondCount == 9)) {

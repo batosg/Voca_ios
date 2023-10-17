@@ -41,7 +41,7 @@ struct Panel2: View {
                                 }
                             }) {
                                 
-                                Text(" Panel"+" \(index)")
+                                Text(" パネル"+" \(index+1)")
                                     .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                     .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                     .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
@@ -148,7 +148,17 @@ struct Panel2: View {
                 }
                 
                 VStack{
-                    
+                    Button(action: {
+                        screen="logview"
+                        
+                    }) {
+                        Text("ログ")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
                     // 設定を初期化するボタン
                     Button(action: {
                         print("初期化")

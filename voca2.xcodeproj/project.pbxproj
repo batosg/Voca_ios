@@ -10,6 +10,7 @@
 		0DAEAADA29F1183C00CF7329 /* Panel1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAEAAD929F1183C00CF7329 /* Panel1.swift */; };
 		0DAEAADC29F1185400CF7329 /* Panel2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAEAADB29F1185400CF7329 /* Panel2.swift */; };
 		0DAEAADE29F1195500CF7329 /* Panel3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAEAADD29F1195500CF7329 /* Panel3.swift */; };
+		0DBE6E582ADCD11700713B54 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBE6E572ADCD11700713B54 /* LogView.swift */; };
 		DC8EB66A27FD6469009E2D67 /* voca2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8EB66927FD6469009E2D67 /* voca2App.swift */; };
 		DC8EB66C27FD6469009E2D67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8EB66B27FD6469009E2D67 /* ContentView.swift */; };
 		DC8EB66E27FD646A009E2D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC8EB66D27FD646A009E2D67 /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		0DAEAAD929F1183C00CF7329 /* Panel1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel1.swift; sourceTree = "<group>"; };
 		0DAEAADB29F1185400CF7329 /* Panel2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel2.swift; sourceTree = "<group>"; };
 		0DAEAADD29F1195500CF7329 /* Panel3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel3.swift; sourceTree = "<group>"; };
+		0DBE6E572ADCD11700713B54 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		DC8EB66627FD6469009E2D67 /* voca2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voca2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8EB66927FD6469009E2D67 /* voca2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = voca2App.swift; sourceTree = "<group>"; };
 		DC8EB66B27FD6469009E2D67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				DCA14802286C27F4008FAF86 /* Triangle.swift */,
 				DC8EB66D27FD646A009E2D67 /* Assets.xcassets */,
 				DC8EB66F27FD646A009E2D67 /* Preview Content */,
+				0DBE6E572ADCD11700713B54 /* LogView.swift */,
 			);
 			path = voca2;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				0DAEAADA29F1183C00CF7329 /* Panel1.swift in Sources */,
 				DC8EB69427FD664D009E2D67 /* scanTimer.swift in Sources */,
 				DCA14801286C273D008FAF86 /* DakuKataView.swift in Sources */,
+				0DBE6E582ADCD11700713B54 /* LogView.swift in Sources */,
 				DCA147FF286C2636008FAF86 /* KatakanaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

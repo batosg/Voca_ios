@@ -17,7 +17,7 @@ struct phraseView: View {
     @Binding var theText: String
     @Binding var playvol: Float
     @Binding var panel: Int
-    @State var synthesiser = AVSpeechSynthesizer()
+    let synthesiser = AVSpeechSynthesizer()
     @State var phraseSet2: [String] = []
     @State var mytextArray:[String]=[]
     @State var mytext:String=""
@@ -339,6 +339,32 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")//配列を代入
         }
     }
+    func getCurrentDate(text:String) -> String {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy年 MMMM d日 h:mm a \(text)\n"
+            return dateFormatter.string(from: Date())
+        }
+    func appendToFile(text:String) {
+            let fileName = "logdata.txt"
+
+            // Get the file URL
+            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let fileURL = documentDirectory.appendingPathComponent(fileName)
+
+                do {
+                    // Read existing content
+                    var existingContent = try String(contentsOf: fileURL)
+
+                    // Append new text
+                    existingContent += getCurrentDate(text: text)
+
+                    // Write modified content back to the file
+                    try existingContent.write(to: fileURL, atomically: false, encoding: .utf8)
+                } catch {
+                    print("Error appending to file: \(error)")
+                }
+            }
+        }
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -410,6 +436,7 @@ struct phraseView: View {
     //    ============================================================================================================================================================================================================================
     func createButton(index: Int) -> some View {
         Button(action: {
+            appendToFile(text:phraseSet2[index])
             playaudio(fileName: "\(phraseSet2[index])")
             theText+=(" "+phraseSet2[index])
         }) {
@@ -461,7 +488,7 @@ struct phraseView: View {
         if (screen == "phrase") {
             if scan.waiting {
                 
-                scan.phraseStart(phraseSet2: phraseSet2,speed: 0.83-(scan.speed)/3,mode:onsei) // オートスキャン開始 ,早さの設定
+                scan.phraseStart(phraseSet2: phraseSet2,speed: 0.83-(scan.speed)/3,mode:onsei,scanmode: scanNum) // オートスキャン開始 ,早さの設定
             } else {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
