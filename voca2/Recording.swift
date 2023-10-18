@@ -48,8 +48,8 @@ struct recordView: View {
                     .font(.largeTitle)
                     .fontWeight(.heavy)
                     .multilineTextAlignment(.center)
-        
-             
+                
+                
                 Picker(selection: $selection, label:Text("選択")) {
                     ForEach(0 ..< pick.count) { num in
                         Text(self.pick[num])
@@ -64,7 +64,7 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
-                   
+                    
                     
                 }else if(panel==1){
                     Text("\(phraseSet6[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
@@ -79,7 +79,7 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
-                                    }else if(panel==3){
+                }else if(panel==3){
                     Text("\(phraseSet8[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
@@ -95,8 +95,8 @@ struct recordView: View {
                     .frame(width: 600)
                     .lineLimit(1) // Limit the number of lines to 1
                 //パネルを確認し、そのパネルに応じる配列を書き換える
-               
-
+                
+                
                 if(selection == 1){
                     TextField("読み上げ用テキスト", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -111,37 +111,37 @@ struct recordView: View {
                         // 録音するボタン
                         
                         Button(isRecording ? "中止" : "録音開始") {
-                                        if isRecording {
-                                            stopRecording(phrase: phrase)
-                                        } else {
-                                            startRecording(phrase : phrase)
-                                        }
-                                    }
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                    .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                                    .background(isRecording ? Color.red : Color.green)
-                                    .border(Color.black)
-                                    
-                                    
-                                    
-                                    Button("再生") {
-                                        playRecordedAudio()
-                                    }
-                                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                    .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                                    .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                    .border(Color.black)
-                                    .disabled(audioURL == nil)
-                      
+                            if isRecording {
+                                stopRecording(phrase: phrase)
+                            } else {
+                                startRecording(phrase : phrase)
+                            }
+                        }
+                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                        .background(isRecording ? Color.red : Color.green)
+                        .border(Color.black)
+                        
+                        
+                        
+                        Button("再生") {
+                            playRecordedAudio()
+                        }
+                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                        .border(Color.black)
+                        .disabled(audioURL == nil)
+                        
                     }else if(selection == 1){
                         Button(action: {
                             @State var utterance = AVSpeechUtterance(string: readphr)
                             utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                             utterance.rate = 0.5
                             utterance.volume = playvol
-                           
+                            
                             synthesiser.speak(utterance)
                             
                         }) {
@@ -154,43 +154,43 @@ struct recordView: View {
                         }
                         
                     }
-                 
+                    
                     Button(action: {
-                      
-                            if(phrase == ""){
-                                showingAlert = true
+                        
+                        if(phrase == ""){
+                            showingAlert = true
+                        }
+                        else{
+                            //書き込んでから読み込む（保存）
+                            if(panel==0){
+                                phraseSet1[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
+                                phraseSet1 = readFromFile_Da(savename: "ps0.dat")
+                            }else if(panel==1){
+                                
+                                phraseSet6[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
+                                phraseSet6 = readFromFile_Da(savename: "ps1.dat")
+                            }else if(panel==2){
+                                
+                                phraseSet7[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
+                                phraseSet7 = readFromFile_Da(savename: "ps2.dat")
+                            }else if(panel==3){
+                                phraseSet8[arrnum] = phrase
+                                writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
+                                phraseSet8 = readFromFile_Da(savename: "ps3.dat")
+                                
                             }
-                            else{
-                                //書き込んでから読み込む（保存）
-                                if(panel==0){
-                                    phraseSet1[arrnum] = phrase
-                                    writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
-                                    phraseSet1 = readFromFile_Da(savename: "ps0.dat")
-                                }else if(panel==1){
-                                    
-                                    phraseSet6[arrnum] = phrase
-                                    writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
-                                    phraseSet6 = readFromFile_Da(savename: "ps1.dat")
-                                }else if(panel==2){
-                                    
-                                    phraseSet7[arrnum] = phrase
-                                    writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
-                                    phraseSet7 = readFromFile_Da(savename: "ps2.dat")
-                                }else if(panel==3){
-                                    phraseSet8[arrnum] = phrase
-                                    writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
-                                    phraseSet8 = readFromFile_Da(savename: "ps3.dat")
-                                    
-                                }
                             
-                            }
+                        }
                         if (selection==1){
                             if(phrase==""){
                                 showingAlert=true
                             }
                             else{
-                               
-                              
+                                
+                                
                                 self.writingToFile_Da(savedata: [readphr], savename: "\(phrase)")
                             }
                         }
@@ -204,7 +204,7 @@ struct recordView: View {
                     }   .alert(isPresented: $showingAlert) {
                         //Alert message
                         Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
-                            }
+                    }
                     Button("ファイル"){
                         
                         print(getDocumentsDirectory())
@@ -214,24 +214,20 @@ struct recordView: View {
                         .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                         .border(Color.black)
                     
-
+                    
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
                     Button(action: {
                         if(panel==0){
                             screen="option"
-                           
                         }else if(panel==1){
                             screen="Panel1"
-                      
                         }else if(panel==2){
                             screen="Panel2"
-                     
                         }else if(panel==3){
                             screen="Panel3"
-                     
                         }
-                     
+                        
                     }) {
                         Text("戻る")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -239,15 +235,11 @@ struct recordView: View {
                             .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
-                                            }
-                    
+                    }
                 }
                 Spacer()
             }
-            
-            
         }
-       
     }
     
     // ファイル書き込み（Data）=============================================================
@@ -287,7 +279,7 @@ struct recordView: View {
         }
     }
     // =================================================================================
-        
+    
     //録音開始(拡張子がないので注意)
     func startRecording(phrase : String) {
         let audioSession = AVAudioSession.sharedInstance()

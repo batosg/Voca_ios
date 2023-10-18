@@ -136,9 +136,9 @@
 				DCD8E40C28EBC88C00148AFD /* Recording.swift */,
 				DC8EB69327FD664D009E2D67 /* scanTimer.swift */,
 				DCA14802286C27F4008FAF86 /* Triangle.swift */,
+				0DBE6E572ADCD11700713B54 /* LogView.swift */,
 				DC8EB66D27FD646A009E2D67 /* Assets.xcassets */,
 				DC8EB66F27FD646A009E2D67 /* Preview Content */,
-				0DBE6E572ADCD11700713B54 /* LogView.swift */,
 			);
 			path = voca2;
 			sourceTree = "<group>";

@@ -23,12 +23,12 @@ struct optionView: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-
-   
+    
+    
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     var body: some View {
-       
+        
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
             
@@ -157,7 +157,7 @@ struct optionView: View {
                     }
                 }
                 VStack{
-                
+                    
                     Button(action: {
                         screen="logview"
                         
@@ -190,7 +190,7 @@ struct optionView: View {
                         let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps0.dat")
                         let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
                         self.writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
-                       
+                        
                         overwriteFile(from: sourceURL, to: destinationURL)
                         
                     }) {
@@ -207,16 +207,16 @@ struct optionView: View {
             phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
         }
     }
-   
+    
     func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
-            do {
-                let sourceData = try Data(contentsOf: sourceURL)
-                try sourceData.write(to: destinationURL, options: .atomic)
-                print("File overwritten successfully.")
-            } catch {
-                print("Error: \(error.localizedDescription)")
-            }
+        do {
+            let sourceData = try Data(contentsOf: sourceURL)
+            try sourceData.write(to: destinationURL, options: .atomic)
+            print("File overwritten successfully.")
+        } catch {
+            print("Error: \(error.localizedDescription)")
         }
+    }
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
@@ -257,6 +257,6 @@ struct optionView: View {
     }
     // =================================================================================
 }
-    
-     
+
+
 

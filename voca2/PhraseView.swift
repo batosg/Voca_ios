@@ -22,7 +22,7 @@ struct phraseView: View {
     @State var mytextArray:[String]=[]
     @State var mytext:String=""
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
-   
+    
     @State var onsei:Int=0
     private let buttonTexts = ["読み上げ\n\n音声", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
     
@@ -32,24 +32,7 @@ struct phraseView: View {
     @State private var audioURL: URL?
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
-    private let buttonVoice = [try! AVAudioPlayer(data: NSDataAsset(name: "konnitiwa")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "onakasuita")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "come")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "thanks")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "yes")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "no")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "hot")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "cold")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "kurusii")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "bed")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "body")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "moziban")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "toilet")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "kyuuin")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "tv")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "up")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "down")!.data),
-                               try! AVAudioPlayer(data: NSDataAsset(name: "change")!.data)]
+    
     
     var body: some View {
         ZStack {
@@ -60,20 +43,20 @@ struct phraseView: View {
                     VStack {
                         // 読み上げ切替ボタン
                         Button(action: {
-                                    onsei = (onsei + 1) % buttonTexts.count
+                            onsei = (onsei + 1) % buttonTexts.count
                             if (scan.waiting==true){
                                 print("change")
                             }
-                                
-                                
-                                }) {
-                                    Text(buttonTexts[onsei])
-                                        .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
-                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                        .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                        .cornerRadius(15.0)
-                                }
+                            
+                            
+                        }) {
+                            Text(buttonTexts[onsei])
+                                .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                .cornerRadius(15.0)
+                        }
                         .padding(/*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
                         
                         // 設定ボタン
@@ -113,16 +96,16 @@ struct phraseView: View {
                     // スキャン範囲切替ボタン
                     VStack {
                         Button(action: {
-                                    scanNum = (scanNum + 1) % scanTexts.count
+                            scanNum = (scanNum + 1) % scanTexts.count
                             
-                                }) {
-                                    Text(scanTexts[scanNum])
-                                        .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
-                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                        .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                        .cornerRadius(15.0)
-                                }
+                        }) {
+                            Text(scanTexts[scanNum])
+                                .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                .cornerRadius(15.0)
+                        }
                         .padding(/*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
                         // スキャンボタン
                         ZStack {
@@ -146,7 +129,7 @@ struct phraseView: View {
                                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                                     utterance.rate = 0.5
                                     utterance.volume = playvol
-                                   
+                                    
                                     synthesiser.speak(utterance)
                                 }) {
                                     Text("読み上げ")
@@ -194,9 +177,9 @@ struct phraseView: View {
                                         .border(((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? Color(red: 0, green: 90/255, blue: 255/255) : /*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: (((scan.count == 19 || scan.count == 44) && scan.waiting == false) ? 6 : 1))
                                 }
                             }
-                            }
                         }
-                       
+                    }
+                    
                     
                     // 画面切替ボタン
                     VStack {
@@ -340,31 +323,31 @@ struct phraseView: View {
         }
     }
     func getCurrentDate(text:String) -> String {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy年 MMMM d日 h:mm a \(text)\n"
-            return dateFormatter.string(from: Date())
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy年 MMMM d日 h:mm a \(text)\n"
+        return dateFormatter.string(from: Date())
+    }
     func appendToFile(text:String) {
-            let fileName = "logdata.txt"
-
-            // Get the file URL
-            if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let fileURL = documentDirectory.appendingPathComponent(fileName)
-
-                do {
-                    // Read existing content
-                    var existingContent = try String(contentsOf: fileURL)
-
-                    // Append new text
-                    existingContent += getCurrentDate(text: text)
-
-                    // Write modified content back to the file
-                    try existingContent.write(to: fileURL, atomically: false, encoding: .utf8)
-                } catch {
-                    print("Error appending to file: \(error)")
-                }
+        let fileName = "logdata.txt"
+        
+        // Get the file URL
+        if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let fileURL = documentDirectory.appendingPathComponent(fileName)
+            
+            do {
+                // Read existing content
+                var existingContent = try String(contentsOf: fileURL)
+                
+                // Append new text
+                existingContent += getCurrentDate(text: text)
+                
+                // Write modified content back to the file
+                try existingContent.write(to: fileURL, atomically: false, encoding: .utf8)
+            } catch {
+                print("Error appending to file: \(error)")
             }
         }
+    }
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -379,60 +362,60 @@ struct phraseView: View {
         
         let fileURL = documentDirectory.appendingPathComponent(fileName)
         //録音ファイルまたはテキストファイルが存在しない場合は読み上げ
-            if !FileManager.default.fileExists(atPath: fileURL.path) {
-                do {
-                    let utterance = AVSpeechUtterance(string: fileName)
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let utterance = AVSpeechUtterance(string: fileName)
+                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                utterance.rate = 0.5
+                utterance.volume = playvol
+                synthesiser.speak(utterance)
+            }
+            //テキストファイルが存在する場合
+        } else {
+            if(isTextFile(fileURL:fileURL)==true){
+                do{
+                    print(fileName)
+                    
+                    
+                    //print("File Contents:", String(data: fileContents, encoding: .utf8) ?? "Unable to convert data to string")
+                    
+                    let mytextArray = self.readFromFile_Da(savename: fileName)
+                    let mytext = mytextArray.joined(separator: "") //配列をStringに変換
+                    let utterance = AVSpeechUtterance(string: mytext)
                     utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                     utterance.rate = 0.5
                     utterance.volume = playvol
                     synthesiser.speak(utterance)
+                    print("Text file found")
                 }
-                //テキストファイルが存在する場合
-            } else {
-                if(isTextFile(fileURL:fileURL)==true){
-                    do{
-                        print(fileName)
-                       
-                        
-                        //print("File Contents:", String(data: fileContents, encoding: .utf8) ?? "Unable to convert data to string")
-
-                        let mytextArray = self.readFromFile_Da(savename: fileName)
-                        let mytext = mytextArray.joined(separator: "") //配列をStringに変換
-                        let utterance = AVSpeechUtterance(string: mytext)
-                        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                        utterance.rate = 0.5
-                        utterance.volume = playvol
-                        synthesiser.speak(utterance)
-                        print("Text file found")
-                   }
-                }else{
-                    //録音ファイルが存在する場合
-                    
-                    do {
-                        audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
-                        audioPlayer?.play()
-                    } catch {
-                        print("ファイルを再生できませんでした")
-                    }
+            }else{
+                //録音ファイルが存在する場合
+                
+                do {
+                    audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+                    audioPlayer?.play()
+                } catch {
+                    print("ファイルを再生できませんでした")
                 }
             }
-    }
-//  ===================================================================================================================================================
-    private func createScanButton(shortcut: KeyEquivalent) -> some View {
-            return Button(action: {
-                
-                    phraseScanAction() // スキャンボタン押下時の処理
-                
-            }) {
-                Text("スキャン")
-                    .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
-                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                    .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
-                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                    .cornerRadius(15.0)
-            }
-            .keyboardShortcut(shortcut, modifiers: [])
         }
+    }
+    //  ===================================================================================================================================================
+    private func createScanButton(shortcut: KeyEquivalent) -> some View {
+        return Button(action: {
+            
+            phraseScanAction() // スキャンボタン押下時の処理
+            
+        }) {
+            Text("スキャン")
+                .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
+                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
+                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                .cornerRadius(15.0)
+        }
+        .keyboardShortcut(shortcut, modifiers: [])
+    }
     //    ============================================================================================================================================================================================================================
     func createButton(index: Int) -> some View {
         Button(action: {
@@ -462,7 +445,7 @@ struct phraseView: View {
             return false
         }
     }
- 
+    
     // ファイル読み込み（Data）=============================================================
     func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
         // DocumentsフォルダURL取得
@@ -479,8 +462,8 @@ struct phraseView: View {
             return read_strings
         } catch{
             print("Error reading file:", error)
-                    return []  // Return an empty array or handle the error accordingly
-                }
+            return []  // Return an empty array or handle the error accordingly
+        }
     }
     // =================================================================================
     

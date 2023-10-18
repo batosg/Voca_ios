@@ -16,7 +16,7 @@ struct Panel3: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-   
+    
     var body: some View {
         
         
@@ -183,7 +183,7 @@ struct Panel3: View {
                         panel=3
                         let sourceURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ps3.dat")
                         let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("phrarray.dat")
-  
+                        
                         self.writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
                         self.writingToFile_Da(savedata: phraseSet8, savename: "phrarray.dat")
                         overwriteFile(from: sourceURL, to: destinationURL)
@@ -203,16 +203,16 @@ struct Panel3: View {
         }
     }
     func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
-            do {
-                let sourceData = try Data(contentsOf: sourceURL)
-                try sourceData.write(to: destinationURL, options: .atomic)
-                print("File overwritten successfully.")
-            } catch {
-                print("Error: \(error.localizedDescription)")
-            }
+        do {
+            let sourceData = try Data(contentsOf: sourceURL)
+            try sourceData.write(to: destinationURL, options: .atomic)
+            print("File overwritten successfully.")
+        } catch {
+            print("Error: \(error.localizedDescription)")
         }
-                
-            
+    }
+    
+    
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得

@@ -403,7 +403,7 @@ struct dakuHiraView: View {
                             
                             // 一文字消去の50音ボタン
                             Button(action: {
-//                                print("一文字消す")
+                                //                                print("一文字消す")
                                 theText = String(theText.dropLast())
                             }) {
                                 Text("消")

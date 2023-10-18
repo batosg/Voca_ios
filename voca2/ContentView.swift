@@ -9,14 +9,14 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
-  
+    
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
     @State var currentScreen = "phrase"
     @State var currentText = ""
     @State var masterVolume: Float = 1.0
     @State var panelnum: Int = 0
     @State var arrnum: Int = 0
-   //配列の初期値
+    //配列の初期値
     @State private var phraseSet1: [String] = ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
     @State public var phraseSet6: [String] = ["こっちに来て", "こっちに来て", "こっちに来て", "こっちに来て", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
     @State public var phraseSet7: [String] = ["お腹がすいた", "お腹がすいた", "お腹がすいた", "お腹がすいた", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"]
@@ -46,7 +46,7 @@ struct ContentView: View {
         }else if (currentScreen == "logview") {
             LogView(screen:$currentScreen)
         }
-         VStack{
+        VStack{
         }.onAppear{
             //初期設定、ファイルが存在しているか確認し、なかったい場合作る
             checkAndCreateFile(fileName: "phrarray.dat",initialContent: ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
@@ -80,7 +80,7 @@ struct ContentView: View {
             print("\(fileName) already exists")
         }
     }
-
+    
     // =================================================================================
 }
 
