@@ -64,7 +64,7 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
-                    
+//                    phrase=phraseSet1[arrnum]
                     
                 }else if(panel==1){
                     Text("\(phraseSet6[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
@@ -72,6 +72,7 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+//                    phrase=phraseSet6[arrnum]
                     
                 }else if(panel==2){
                     Text("\(phraseSet7[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
@@ -79,21 +80,22 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+//                    phrase=phraseSet7[arrnum]
                 }else if(panel==3){
                     Text("\(phraseSet8[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                         .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                         .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
                         .border(Color.black)
                         .background(Color.white)
+//                    phrase=phraseSet8[arrnum]
                     
                 }
                 
                 TextField("表示文字列を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    .padding(.bottom)
                     .font(.system(size: 50))
                     .frame(width: 600)
-                    .lineLimit(1) // Limit the number of lines to 1
                 //パネルを確認し、そのパネルに応じる配列を書き換える
                 
                 
@@ -103,56 +105,71 @@ struct recordView: View {
                         .padding()
                         .font(.system(size: 50))
                         .frame(width: 600)
-                        .lineLimit(1) // Limit the number of lines to 1
                 }
                 VStack{
                     if(selection == 0){
-                        
-                        // 録音するボタン
-                        
-                        Button(isRecording ? "中止" : "録音開始") {
+                        HStack{
+                            // 録音するボタン
+                            
+                            
                             if isRecording {
-                                stopRecording(phrase: phrase)
-                            } else {
-                                startRecording(phrase : phrase)
+                                Button(action: {
+                                    withAnimation{
+                                        
+                                        stopRecording(phrase: phrase)
+                                        
+                                    }
+                                }) {
+                                    Image(systemName: "stop.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 150, height: 150)
+                                        .foregroundColor(.red)
+                                }
+                                
+                            }else{
+                                Button(action: {
+                                    withAnimation{
+                                        startRecording(phrase : phrase)
+                                    }
+                                }) {
+                                    Image(systemName: "mic.circle")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 150, height: 150)
+                                        .foregroundColor(.blue)
+                                }
                             }
+                            
+                            Button(action: {
+                                withAnimation{
+                                    playRecordedAudio()
+                                }
+                            }) {
+                                Image(systemName: "play.circle.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 150, height: 150)
+                                    .foregroundColor(.green)
+                            }
+                            .disabled(audioURL == nil)
                         }
-                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                        .background(isRecording ? Color.red : Color.green)
-                        .border(Color.black)
-                        
-                        
-                        
-                        Button("再生") {
-                            playRecordedAudio()
-                        }
-                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                        .border(Color.black)
-                        .disabled(audioURL == nil)
-                        
                     }else if(selection == 1){
                         Button(action: {
-                            @State var utterance = AVSpeechUtterance(string: readphr)
-                            utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                            utterance.rate = 0.5
-                            utterance.volume = playvol
-                            
-                            synthesiser.speak(utterance)
-                            
+                            withAnimation{
+                                @State var utterance = AVSpeechUtterance(string: readphr)
+                                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+                                utterance.rate = 0.5
+                                utterance.volume = playvol
+                                synthesiser.speak(utterance)
+                            }
                         }) {
-                            Text("合成音声再生")
-                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                                .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                                .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                                .border(Color.black)
+                            Image(systemName: "play.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150, height: 150)
+                                .foregroundColor(.green)
                         }
-                        
                     }
                     
                     Button(action: {
@@ -167,12 +184,10 @@ struct recordView: View {
                                 writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
                                 phraseSet1 = readFromFile_Da(savename: "ps0.dat")
                             }else if(panel==1){
-                                
                                 phraseSet6[arrnum] = phrase
                                 writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
                                 phraseSet6 = readFromFile_Da(savename: "ps1.dat")
                             }else if(panel==2){
-                                
                                 phraseSet7[arrnum] = phrase
                                 writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
                                 phraseSet7 = readFromFile_Da(savename: "ps2.dat")
@@ -182,20 +197,19 @@ struct recordView: View {
                                 phraseSet8 = readFromFile_Da(savename: "ps3.dat")
                                 
                             }
-                            
                         }
                         if (selection==1){
                             if(phrase==""){
                                 showingAlert=true
                             }
                             else{
-                                
-                                
                                 self.writingToFile_Da(savedata: [readphr], savename: "\(phrase)")
                             }
                         }
                     }) {
-                        Text("保存")
+                        (
+                            Label("保存",systemImage: "opticaldiscdrive")
+                        )
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                             .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
                             .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
@@ -205,15 +219,18 @@ struct recordView: View {
                         //Alert message
                         Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
                     }
-                    Button("ファイル"){
+                    Button(action: {
                         
                         print(getDocumentsDirectory())
-                    }.font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                        .border(Color.black)
-                    
+                        
+                    }){
+                        Label("ファイル",systemImage: "folder")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
                     
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
@@ -229,7 +246,7 @@ struct recordView: View {
                         }
                         
                     }) {
-                        Text("戻る")
+                        Label("戻る",systemImage: "arrowshape.turn.up.backward")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                             .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
                             .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
