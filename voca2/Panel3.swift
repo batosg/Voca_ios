@@ -165,9 +165,7 @@ struct Panel3: View {
                     // 設定を初期化するボタン
                     Button(action: {
                         print("初期化")
-                        panel=0
-                        screen="option"
-                        self.writingToFile_Da(savedata: phraseSet1, savename: "phrarray.dat")
+                        ResetAllFiles()
                     }) {
                         Text("初期化")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -251,7 +249,52 @@ struct Panel3: View {
         }
     }
     // =================================================================================
-    
+    func ResetAllFiles() {
+        let fileManager = FileManager.default
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURLs = try? fileManager.contentsOfDirectory(at: documentsDirectory, includingPropertiesForKeys: nil, options: [])
+        
+        if let fileURLs = fileURLs {
+            for fileURL in fileURLs {
+                do {
+                    try fileManager.removeItem(at: fileURL)
+                } catch {
+                    print("Error deleting file: \(error)")
+                }
+            }
+        }
+        
+        phraseSet8 = ["にほん", "アメリカ", "カナダ", "イギリス", "フランス", "ドイツ", "ロシア", "ブラジル", "オーストラリア", "中国", "韓国", "インド", "スペイン", "イタリア", "メキシコ", "インドネシア", "トルコ", "南アフリカ"]
+        //初期設定、ファイルが存在しているか確認し、なかったい場合作る
+        checkAndCreateFile(fileName: "phrarray.dat",initialContent: ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+        checkAndCreateFile(fileName: "ps0.dat",initialContent: ["こんにちは", "お腹がすいた", "こっちに来て", "ありがとう", "はい", "いいえ", "あつい", "さむい", "くるしい", "ベッド", "体", "文字盤", "トイレ", "吸引", "テレビ", "上げて", "下げて", "向きを変えて"])
+        checkAndCreateFile(fileName: "ps1.dat",initialContent: ["ペン", "ノート", "はさみ", "けしゴム", "えんぴつ", "シャープペンシル", "ホチキス", "リボン", "マーカー", "クリアファイル", "のり", "カッター", "シート", "テープ", "シール", "クレヨン", "ボールペン", "シャープナー"])
+        checkAndCreateFile(fileName: "ps2.dat",initialContent: ["いぬ", "ねこ", "とり", "さかな", "とら", "おおかみ", "さる", "ぞう", "ひつじ", "うし", "うま", "うさぎ", "くま", "へび", "かめ", "きつね", "しか", "ちょう"])
+        checkAndCreateFile(fileName: "ps3.dat",initialContent: ["にほん", "アメリカ", "カナダ", "イギリス", "フランス", "ドイツ", "ロシア", "ブラジル", "オーストラリア", "中国", "韓国", "インド", "スペイン", "イタリア", "メキシコ", "インドネシア", "トルコ", "南アフリカ"])
+        checkAndCreateFile(fileName: "logdata.txt",initialContent:[])
+    }
+    //ファイルを存在しているか確認し、なかったい場合には作成する
+    func checkAndCreateFile(fileName: String, initialContent: [String]) {
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("Unable to access document directory")
+            return
+        }
+        
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            let content = "[\"" + initialContent.joined(separator: "\", \"") + "\"]"
+            
+            do {
+                try content.write(to: fileURL, atomically: true, encoding: .utf8)
+                print("File:\(fileName) created successfully")
+            } catch {
+                print("Error creating file:\(fileName) \(error)")
+            }
+        } else {
+            print("\(fileName) already exists")
+        }
+    }
 }
 
 

@@ -108,6 +108,7 @@ class scanTimer: ObservableObject {
                     if (self.count == 25) {
                         self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
+                        print(scanmode)
                         
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
@@ -137,12 +138,14 @@ class scanTimer: ObservableObject {
                     }
                 }else if(mode==1){
                     if(self.count<48){
+                        print(scanmode)
                         self.scanVoice[23].stop()
                         self.scanVoice[23].play()
                     }else{
                         self.stop()
                     }
                 }else if(mode==2){
+                    print(scanmode)
                     if(self.count>49){
                         self.stop()
                     }
@@ -160,9 +163,10 @@ class scanTimer: ObservableObject {
                     }
                     // オートスキャン時の読み上げ
                     if (self.count == 25) {
+                        print(scanmode)
                         self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
-                        
+                        print(scanmode)
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                         if(speed<0.5){
