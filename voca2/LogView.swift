@@ -55,11 +55,13 @@ struct LogView: View {
         }
         .padding(.trailing)
     }
+    
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
         guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("フォルダURL取得エラー")
         }
+        //
         // 対象のファイルURL取得
         let fileURL = dirURL.appendingPathComponent(savename)
         // ファイルの書き込み//JSONEncoderを利用
