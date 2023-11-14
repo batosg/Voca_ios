@@ -28,7 +28,7 @@ struct recordView: View {
     
     @State private var phrase = ""
     @State private var readphr = ""
-    let pick = ["録音", "合成音声","オリジナル"]
+    let pick = ["録音", "合成音声"]
     @State private var selection = 0
     @State private var phraseSet4: [String] = []
     @State private var showingAlert = false
@@ -217,21 +217,24 @@ struct recordView: View {
                             .border(Color.black)
                     }   .alert(isPresented: $showingAlert) {
                         //Alert message
-                        Alert(title: Text("エラー"),message: Text("語句を入れてください"),dismissButton: .default(Text("OK"),action: {}))
+                        Alert(
+                            title: Text("エラー"),
+                            message: Text("語句を入れてください"),
+                            dismissButton: .default(Text("OK"),action: {}))
                     }
-                    Button(action: {
-                        
-                        print(getDocumentsDirectory())
-                        
-                    }){
-                        Label("ファイル",systemImage: "folder")
-                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
-                    }
-                    
+//                    Button(action: {
+//
+//                        print(getDocumentsDirectory())
+//
+//                    }){
+//                        Label("ファイル",systemImage: "folder")
+//                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+//                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+//                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+//                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+//                            .border(Color.black)
+//                    }
+//
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
                     Button(action: {

@@ -4,58 +4,102 @@
 //
 //  Created by BATORGIL on 2023/10/16.
 //
-
 import SwiftUI
 
 struct LogView: View {
     @State private var fileContent: String = ""
     @State private var isShowingDialog = false
-    @Binding var screen:String
+    @State private var showingAlert = false
+    @Binding var screen: String
+
     var body: some View {
-        HStack{
-            ScrollView {
-                VStack {
-                    Text("ログ記録:")
-                    Text(fileContent)
-                        .padding()
-                }
-            }
-            .onAppear {
-                readTextFile()
-            }
-            VStack{
-                Button(action: {
-                    isShowingDialog = true
+        ZStack {
+            Color(red: 191/255, green: 228/255, blue: 255/255)
+                .ignoresSafeArea()
+
+            VStack {
+                HStack {
+                    Button(action: {
+                        isShowingDialog=true
+                      
+                    }) {
+                        Label("削除", systemImage: "trash")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color.white)
+                            .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 255/255, green: 75/255, blue: 0))
+                            .border(Color.black)
+                    }.confirmationDialog("注意！",isPresented: $isShowingDialog) {
+                        Button("削除する",role:.destructive){
+                            writingToFile_Da(savedata: [""], savename: "logdata.txt")
+                            screen="option"
+                            showingAlert=true
+
+                        }.alert(isPresented: $showingAlert) {
+                            //Alert message　ざざ
+                            Alert(
+                                title: Text("メッセージ"),
+                                message: Text("ログデータは正常に削除されました"),
+                                dismissButton: .default(Text("OK"),action: {}))
+                        }
+                        Button("キャンセル",role:.cancel){
+                            print("cancel")
+                        }
+                    }message: {
+                        Text("全てのログデータが削除すると戻せません")
+                    }
                     
-                }) {
-                    Label("消去",systemImage: "trash")
-                        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                        
-                    
-                }.confirmationDialog("注意", isPresented: $isShowingDialog){
-                    Button("消去する",role: .destructive){
-                        writingToFile_Da(savedata: [""], savename: "logdata.txt")
+                    .buttonStyle(BorderlessButtonStyle())
+
+                    Spacer()
+
+                    Button(action: {
                         screen = "option"
+                    }) {
+                        Label("戻る", systemImage: "arrowshape.turn.up.backward")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
                     }
-                    Button("キャンセル",role: .cancel){
-                        print("cancel")
-                    }
-                }message:{
-                        Text("消去すると戻せません")
-                    }
-                
-                Button(action: {
-                    screen = "option"
-                }) {
-                    Label("戻る",systemImage: "arrowshape.turn.up.backward")
-                        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                        
+                    .buttonStyle(BorderlessButtonStyle())
                 }
+                .padding()
+
+                Text("ログ記録")
+                    .font(.largeTitle)
+                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                    .padding(.top, 20)
+
+                ScrollView {
+                     if (fileContent.isEmpty ||  fileContent == "[\"\"]"){
+                        Text("ログ記録はありません")
+                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                            .padding()
+                            .frame(minWidth: UIScreen.main.bounds.width * 0.8) // Set a default width
+                    } else {
+                        Text(fileContent)
+                            .font(.system(size: 24, weight: .bold)) // Set the font size to 24 or adjust as needed
+                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                        .padding()
+                                        .frame(minWidth: UIScreen.main.bounds.width * 0.8, alignment: .leading) // Set a default width with left alignment
+                    }
+                        
+                    
+                }
+                .onAppear {
+                    readTextFile()
+                }
+                .background(Color.white)
+                .cornerRadius(10)
+                .padding()
             }
         }
-        .padding(.trailing)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+  
+
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
         guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {

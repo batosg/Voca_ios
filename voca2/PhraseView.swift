@@ -353,7 +353,7 @@ struct phraseView: View {
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
-    //============================================================================================================================================================================================================================
+  
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("ファイルが見つかりませんでした")
@@ -400,7 +400,7 @@ struct phraseView: View {
             }
         }
     }
-    //  ===================================================================================================================================================
+    
     private func createScanButton(shortcut: KeyEquivalent) -> some View {
         return Button(action: {
             
@@ -416,7 +416,7 @@ struct phraseView: View {
         }
         .keyboardShortcut(shortcut, modifiers: [])
     }
-    //    ============================================================================================================================================================================================================================
+
     func createButton(index: Int) -> some View {
         Button(action: {
             appendToFile(text:phraseSet2[index])
@@ -438,10 +438,10 @@ struct phraseView: View {
     func isTextFile(fileURL: URL) -> Bool {
         do {
             let fileContent = try String(contentsOf: fileURL)
-            // If decoding as String succeeds, it's likely a text file
+            //完成すればテキストファイル
             return true
         } catch {
-            // Failed to decode as String, may not be a text file
+            //失敗すればテキストファイルではない
             return false
         }
     }
@@ -465,8 +465,7 @@ struct phraseView: View {
             return []  // Return an empty array or handle the error accordingly
         }
     }
-    // =================================================================================
-    
+
     func phraseScanAction() {
         if (screen == "phrase") {
             if scan.waiting {
