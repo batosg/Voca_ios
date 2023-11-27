@@ -8,8 +8,12 @@
 //recording
 =======
 //avspeech
+<<<<<<< HEAD
 //test2
 >>>>>>> master
+=======
+//av speech 1
+>>>>>>> AVspeechsynthesizer
 import SwiftUI
 import AVFoundation
 
