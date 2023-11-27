@@ -36,7 +36,7 @@ struct LogView: View {
                             showingAlert=true
 
                         }.alert(isPresented: $showingAlert) {
-                            //Alert message　ざざ
+                            //Alert message　
                             Alert(
                                 title: Text("メッセージ"),
                                 message: Text("ログデータは正常に削除されました"),
