@@ -2,6 +2,7 @@
 //  Triangle.swift
 //  voca2
 //
+//
 //  Created by 髙橋大 on 2022/06/29.
 //
 
