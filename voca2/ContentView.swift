@@ -3,17 +3,7 @@
 //  voca2
 //
 //  Created by GANBAT BATORGIL on 2023/04/06.
-<<<<<<< HEAD
-//
-//recording
-=======
-//avspeech
-<<<<<<< HEAD
-//test2
->>>>>>> master
-=======
 //av speech 1
->>>>>>> AVspeechsynthesizer
 import SwiftUI
 import AVFoundation
 

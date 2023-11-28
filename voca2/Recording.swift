@@ -23,6 +23,7 @@ struct recordView: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
+    @State private var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     
@@ -57,38 +58,8 @@ struct recordView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 800)
-                if(panel==0){
-                    
-                    Text("\(phraseSet1[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                        .border(Color.black)
-                        .background(Color.white)
-//                    phrase=phraseSet1[arrnum]
-                    
-                }else if(panel==1){
-                    Text("\(phraseSet6[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                        .border(Color.black)
-                        .background(Color.white)
-//                    phrase=phraseSet6[arrnum]
-                    
-                }else if(panel==2){
-                    Text("\(phraseSet7[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                        .border(Color.black)
-                        .background(Color.white)
-//                    phrase=phraseSet7[arrnum]
-                }else if(panel==3){
-                    Text("\(phraseSet8[arrnum])").font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
-                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                        .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
-                        .border(Color.black)
-                        .background(Color.white)
-//                    phrase=phraseSet8[arrnum]
-                    
+                if panel=<0 && panel<phraseSet.count{
+                    createText(phraseSet: [panel], arrnum: arrnum)
                 }
                 
                 TextField("表示文字列を入力", text: $phrase)
@@ -178,24 +149,20 @@ struct recordView: View {
                             showingAlert = true
                         }
                         else{
-                            //書き込んでから読み込む（保存）
-                            if(panel==0){
-                                phraseSet1[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet1, savename: "ps0.dat")
-                                phraseSet1 = readFromFile_Da(savename: "ps0.dat")
-                            }else if(panel==1){
-                                phraseSet6[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet6, savename: "ps1.dat")
-                                phraseSet6 = readFromFile_Da(savename: "ps1.dat")
-                            }else if(panel==2){
-                                phraseSet7[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet7, savename: "ps2.dat")
-                                phraseSet7 = readFromFile_Da(savename: "ps2.dat")
-                            }else if(panel==3){
-                                phraseSet8[arrnum] = phrase
-                                writingToFile_Da(savedata: phraseSet8, savename: "ps3.dat")
-                                phraseSet8 = readFromFile_Da(savename: "ps3.dat")
-                                
+                            var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
+                            // Ensure panel is within valid range
+                            if panel >= 0 && panel < phraseSet.count {
+                                // Update the specified phraseSet array
+                                phraseSet[panel][arrnum] = phrase
+
+                                // Define the filename based on the panel
+                                let filename = "ps\(panel).dat"
+
+                                // Write to file
+                                writingToFile_Da(savedata: phraseSet[panel], savename: filename)
+
+                                // Read from file and update the corresponding phraseSet array
+                                phraseSet[panel] = readFromFile_Da(savename: filename)
                             }
                         }
                         if (selection==1){
@@ -280,6 +247,14 @@ struct recordView: View {
         }
     }
     // =================================================================================
+    func createText(phraseSet: [String], arrnum: Int) -> some View {
+        return Text("\(phraseSet[arrnum])")
+            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
+            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+            .frame(width: UIScreen.main.bounds.width * 0.16, height: UIScreen.main.bounds.height * 0.08)
+            .border(Color.black)
+            .background(Color.white)
+    }
     // ファイル読み込み（Data）=============================================================
     func readFromFile_Da(savename: String) -> [String] { //[String]を返す仕様に変更
         // DocumentsフォルダURL取得

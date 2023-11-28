@@ -16,7 +16,8 @@ struct Panel2: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-    
+    @State private var isShowingDialog = false
+    @State private var showingAlert = false
     var body: some View {
         
         
@@ -162,16 +163,36 @@ struct Panel2: View {
                     // 設定を初期化するボタン
                     Button(action: {
                         print("初期化")
-                        ResetAllFiles()
+                        isShowingDialog=true
+
                     }) {
-                        Text("初期化")
+                        Label("初期化", systemImage: "trash")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                             .foregroundColor(Color.white)
                             .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
                             .background(Color(red: 255/255, green: 75/255, blue: 0))
                             .border(Color.black)
+                    }.confirmationDialog("注意！",isPresented: $isShowingDialog) {
+                        Button("削除する",role:.destructive){
+                            ResetAllFiles()
+                            showingAlert=true
+
+                        }.alert(isPresented: $showingAlert) {
+                            //Alert message
+                            Alert(
+                                title: Text("メッセージ"),
+                                message: Text("初期化れました"),
+                                dismissButton: .default(Text("OK"),action: {}))
+                        }
+                        Button("キャンセル",role:.cancel){
+                            print("cancel")
+                        }
+                    }message: {
+                        Text("全てのログデータが初期化すると戻せません")
                     }
                     
+                    .buttonStyle(BorderlessButtonStyle())
+
                     // 定型句画面に戻るボタン
                     Button(action: {
                         screen = "phrase"
