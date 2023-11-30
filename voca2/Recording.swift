@@ -23,7 +23,6 @@ struct recordView: View {
     @Binding var phraseSet6: [String]
     @Binding var phraseSet7: [String]
     @Binding var phraseSet8: [String]
-    @State private var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
     
@@ -58,9 +57,12 @@ struct recordView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(width: 800)
-                if panel=<0 && panel<phraseSet.count{
-                    createText(phraseSet: [panel], arrnum: arrnum)
+                
+                var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
+                if panel>=0 && panel<phraseSet.count{
+                    createText(phraseSet: phraseSet[panel], arrnum: arrnum)
                 }
+                
                 
                 TextField("表示文字列を入力", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -70,7 +72,19 @@ struct recordView: View {
                 //パネルを確認し、そのパネルに応じる配列を書き換える
                 
                 
+                
+                
                 if(selection == 1){
+                    Button("テキストを移す") {
+                        // Copy text from the first field to the second field
+                        readphr=phrase
+                    }
+                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                    .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                    .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                    .border(Color.black)
+
                     TextField("読み上げ用テキスト", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
@@ -149,18 +163,17 @@ struct recordView: View {
                             showingAlert = true
                         }
                         else{
-                            var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
                             // Ensure panel is within valid range
                             if panel >= 0 && panel < phraseSet.count {
                                 // Update the specified phraseSet array
                                 phraseSet[panel][arrnum] = phrase
-
+                                
                                 // Define the filename based on the panel
                                 let filename = "ps\(panel).dat"
-
+                                
                                 // Write to file
                                 writingToFile_Da(savedata: phraseSet[panel], savename: filename)
-
+                                
                                 // Read from file and update the corresponding phraseSet array
                                 phraseSet[panel] = readFromFile_Da(savename: filename)
                             }
@@ -177,11 +190,11 @@ struct recordView: View {
                         (
                             Label("保存",systemImage: "opticaldiscdrive")
                         )
-                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
+                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                        .border(Color.black)
                     }   .alert(isPresented: $showingAlert) {
                         //Alert message
                         Alert(
@@ -189,19 +202,19 @@ struct recordView: View {
                             message: Text("語句を入れてください"),
                             dismissButton: .default(Text("OK"),action: {}))
                     }
-//                    Button(action: {
-//
-//                        print(getDocumentsDirectory())
-//
-//                    }){
-//                        Label("ファイル",systemImage: "folder")
-//                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-//                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-//                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-//                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-//                            .border(Color.black)
-//                    }
-//
+                    //                    Button(action: {
+                    //
+                    //                        print(getDocumentsDirectory())
+                    //
+                    //                    }){
+                    //                        Label("ファイル",systemImage: "folder")
+                    //                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                    //                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                    //                            .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
+                    //                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                    //                            .border(Color.black)
+                    //                    }
+                    //
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
                     Button(action: {

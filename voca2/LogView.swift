@@ -11,17 +11,17 @@ struct LogView: View {
     @State private var isShowingDialog = false
     @State private var showingAlert = false
     @Binding var screen: String
-
+    
     var body: some View {
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255)
                 .ignoresSafeArea()
-
+            
             VStack {
                 HStack {
                     Button(action: {
                         isShowingDialog=true
-                      
+                        
                     }) {
                         Label("削除", systemImage: "trash")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -34,9 +34,9 @@ struct LogView: View {
                             writingToFile_Da(savedata: [""], savename: "logdata.txt")
                             screen="option"
                             showingAlert=true
-
+                            
                         }.alert(isPresented: $showingAlert) {
-                            //Alert message　
+                            //Alert message
                             Alert(
                                 title: Text("メッセージ"),
                                 message: Text("ログデータは正常に削除されました"),
@@ -50,9 +50,9 @@ struct LogView: View {
                     }
                     
                     .buttonStyle(BorderlessButtonStyle())
-
+                    
                     Spacer()
-
+                    
                     Button(action: {
                         screen = "option"
                     }) {
@@ -66,14 +66,14 @@ struct LogView: View {
                     .buttonStyle(BorderlessButtonStyle())
                 }
                 .padding()
-
+                
                 Text("ログ記録")
                     .font(.largeTitle)
                     .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                     .padding(.top, 20)
-
+                
                 ScrollView {
-                     if (fileContent.isEmpty ||  fileContent == "[\"\"]"){
+                    if (fileContent.isEmpty ||  fileContent == "[\"\"]"){
                         Text("ログ記録はありません")
                             .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                             .padding()
@@ -81,11 +81,11 @@ struct LogView: View {
                     } else {
                         Text(fileContent)
                             .font(.system(size: 24, weight: .bold)) // Set the font size to 24 or adjust as needed
-                                        .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                                        .padding()
-                                        .frame(minWidth: UIScreen.main.bounds.width * 0.8, alignment: .leading) // Set a default width with left alignment
+                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                            .padding()
+                            .frame(minWidth: UIScreen.main.bounds.width * 0.8, alignment: .leading) // Set a default width with left alignment
                     }
-                        
+                    
                     
                 }
                 .onAppear {
@@ -98,8 +98,8 @@ struct LogView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-  
-
+    
+    
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
         guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
