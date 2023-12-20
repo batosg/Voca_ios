@@ -10,6 +10,7 @@ import SwiftUI
 import AVFoundation
 
 class scanTimer: ObservableObject {
+    @State var shouldSkip = false
     @State private var isSpeaking = false
     @State private var activePlayerIndex: Int?
     @State var audioPlayer: AVAudioPlayer?
@@ -92,24 +93,38 @@ class scanTimer: ObservableObject {
     // 定型句VOCA画面のオートスキャン開始
     func phraseStart(phraseSet2:[String],speed: Double,mode:Int,scanmode:Int) {
         self.waiting = false
-        self.scanVoice[0].play()
+        
   
         print("スキャン開始")
         if(scanmode==0){
+            if(mode==0){
+                playtext(text: "読み上げ")
+            }else if(mode==1){
+                self.scanVoice[23].stop()
+                self.scanVoice[23].play()
+            }
+
             // タイマー起動
             timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
                 self.count += 1
-                if(mode==0){
+                if(self.count<=17){
+                    if (phraseSet2[self.count-1]=="空"){
+                        self.count += 1
+                        print(phraseSet2[self.count-1])
+                    }
+                }
+                
+                 if(mode==0){
                     if synthesiser.isSpeaking {                             //音声が重なることがなくなる
                         synthesiser.stopSpeaking(at: .immediate)
                         isSpeaking = false
                     }
+                    print(count)
                     // オートスキャン時の読み上げ
                     if (self.count == 25) {
-                        self.scanVoice[0].play()  // 「読み上げ」
+                        playtext(text: "読み上げ")
+//                        self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
-                        print(scanmode)
-                        
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                         if(speed<0.5){
@@ -125,20 +140,29 @@ class scanTimer: ObservableObject {
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-26])
                         self.synthesiser.speak(utterance) // 定型句
                     } else if (self.count == 19 || self.count == 44) {
+//                        playtext(text: "消去")
                         self.scanVoice[19].play()  // 「消去」
                     } else if (self.count == 20 || self.count == 45) {
-                        self.scanVoice[20].play()  // 「切り替え」
+//                        playtext(text: "切り替え")
+                       self.scanVoice[20].play()  // 「切り替え」
                     } else if (self.count == 21 || self.count == 46) {
-                        self.scanVoice[21].play()  // 「早く」
+                        playtext(text: "早く")
+//                        self.scanVoice[21].play()  // 「早く」
                     } else if (self.count == 22 || self.count == 47) {
-                        self.scanVoice[22].play()  // 「遅く」1
-                    } else if (self.count > 49) {
+                        playtext(text: "遅く")
+//                        self.scanVoice[22].play()  // 「遅く」1
+                    } else if (self.count == 23 || self.count == 48) {
+                        playtext(text: "小さく")
+                    } else if (self.count == 24 || self.count == 49) {
+                        playtext(text: "大きく")
+//                        self.scanVoice[22].play()  // 「遅く」1
+                    }else if (self.count > 49) {
                         self.stop()  // 2周で終了
                         print("終")
                     }
                 }else if(mode==1){
+                    
                     if(self.count<48){
-                        print(scanmode)
                         self.scanVoice[23].stop()
                         self.scanVoice[23].play()
                     }else{
@@ -153,10 +177,24 @@ class scanTimer: ObservableObject {
             }
             
         }else if (scanmode==1){
-            
+            if(mode==0){
+                playtext(text: "読み上げ")
+            }else if(mode==1){
+                self.scanVoice[23].stop()
+                self.scanVoice[23].play()
+            }
             timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
                 self.count += 1
+                
+                if (phraseSet2[self.count-1]=="空"){
+                    self.count += 1
+                    print(phraseSet2[self.count-1])
+                    
+                    }
+
+
                 if(mode==0){
+                    
                     if synthesiser.isSpeaking {                             //音声が重なることがなくなる
                         synthesiser.stopSpeaking(at: .immediate)
                         isSpeaking = false
@@ -166,7 +204,8 @@ class scanTimer: ObservableObject {
                         print(scanmode)
                         self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
-                        print(scanmode)
+                        
+                        print(phraseSet2[self.count-1])
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
                         if(speed<0.5){
@@ -215,7 +254,13 @@ class scanTimer: ObservableObject {
             }
         }
     }
-    
+    func playtext(text: String){
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+        utterance.rate = 0.5
+        utterance.volume = playvol
+        synthesiser.speak(utterance)
+    }
     // 50音文字盤VOCA画面（清音ひらがな, 清音カタカナ）のオートスキャン開始
     func aiueoStart() {
         self.waiting = false

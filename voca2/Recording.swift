@@ -180,7 +180,7 @@ struct recordView: View {
                         }
                         if (selection==1){
                             if(phrase==""){
-                                showingAlert=true
+//                                showingAlert=true
                             }
                             else{
                                 self.writingToFile_Da(savedata: [readphr], savename: "\(phrase)")
@@ -195,12 +195,12 @@ struct recordView: View {
                         .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
                         .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                         .border(Color.black)
-                    }   .alert(isPresented: $showingAlert) {
-                        //Alert message
-                        Alert(
-                            title: Text("エラー"),
-                            message: Text("語句を入れてください"),
-                            dismissButton: .default(Text("OK"),action: {}))
+//                    }   .alert(isPresented: $showingAlert) {
+//                        //Alert message
+//                        Alert(
+//                            title: Text("エラー"),
+//                            message: Text("語句を入れてください"),
+//                            dismissButton: .default(Text("OK"),action: {}))
                     }
                     //                    Button(action: {
                     //

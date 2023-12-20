@@ -22,12 +22,14 @@ struct phraseView: View {
     @State var mytextArray:[String]=[]
     @State var mytext:String=""
     @ObservedObject var scan = scanTimer()  // scanTimerのインスタンスを作り観測する
-    
-    @State var onsei:Int=0
-    private let buttonTexts = ["読み上げ\n\n音声", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
+    @State var isScanning = false
+    @State var scanstart:Int = 0
+    @State var scanStatus = ["スキャン\n\nスタート","決定"]
+    @State var onsei:Int = 0    //button text配列の数0,1,2スキャン音", "読み上げ\n\n効果音", "読み上げ\n\n音声なし
+    private let buttonTexts = ["スキャン音", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
     
     @State var scanNum:Int=0
-    private let scanTexts = ["スキャン範囲\n\n機能あり","スキャン範囲\n定型句\nのみ"]
+    private let scanTexts = ["スキャン範囲\n\n全ボタン","スキャン範囲\n定型句\nのみ"]
     
     @State private var audioURL: URL?
     @State private var audioRecorder: AVAudioRecorder?
@@ -324,7 +326,9 @@ struct phraseView: View {
     }
     func getCurrentDate(text:String) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy年 MMMM d日 h:mm a \(text)\n"
+        
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateFormat = "yyyy年 MM月 d日 h:mm a '\(text)'\n"
         return dateFormatter.string(from: Date())
     }
     func appendToFile(text:String) {
@@ -353,7 +357,13 @@ struct phraseView: View {
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
-  
+    func playtext(text: String){
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+        utterance.rate = 0.5
+        utterance.volume = playvol
+        synthesiser.speak(utterance)
+    }
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("ファイルが見つかりませんでした")
@@ -403,11 +413,11 @@ struct phraseView: View {
     
     private func createScanButton(shortcut: KeyEquivalent) -> some View {
         return Button(action: {
-            
+            scanstart = (scanstart + 1) % scanStatus.count
             phraseScanAction() // スキャンボタン押下時の処理
             
         }) {
-            Text("スキャン")
+            Text(scanStatus[scanstart])
                 .font(.system(size: UIScreen.main.bounds.width * 0.02, weight: .medium))
                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                 .frame(width: UIScreen.main.bounds.width * 0.12, height: UIScreen.main.bounds.height * 0.16)
