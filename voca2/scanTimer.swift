@@ -93,8 +93,6 @@ class scanTimer: ObservableObject {
     // 定型句VOCA画面のオートスキャン開始
     func phraseStart(phraseSet2:[String],speed: Double,mode:Int,scanmode:Int) {
         self.waiting = false
-        
-  
         print("スキャン開始")
         if(scanmode==0){
             if(mode==0){
@@ -107,12 +105,12 @@ class scanTimer: ObservableObject {
             // タイマー起動
             timer = Timer.scheduledTimer(withTimeInterval: self.speed, repeats: true) { [self] _ in
                 self.count += 1
-                if(self.count<=17){
-                    if (phraseSet2[self.count-1]=="空"){
-                        self.count += 1
-                        print(phraseSet2[self.count-1])
-                    }
-                }
+//                if(self.count<=17){
+//                    if (phraseSet2[self.count-1]=="空"){
+//                        self.count += 1
+//                        print(phraseSet2[self.count-1])
+//                    }
+//                }
                 
                  if(mode==0){
                     if synthesiser.isSpeaking {                             //音声が重なることがなくなる
@@ -123,7 +121,6 @@ class scanTimer: ObservableObject {
                     // オートスキャン時の読み上げ
                     if (self.count == 25) {
                         playtext(text: "読み上げ")
-//                        self.scanVoice[0].play()  // 「読み上げ」
                     } else if (self.count > 0 && self.count < 19) {
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-1])
                         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
@@ -133,9 +130,7 @@ class scanTimer: ObservableObject {
                             utterance.rate = Float(speed)
                         }
                         utterance.volume = self.playvol
-                        
                         synthesiser.speak(utterance) // 定型句
-                        
                     } else if (self.count > 25 && self.count < 44) {
                         let utterance = AVSpeechUtterance(string: phraseSet2[self.count-26])
                         self.synthesiser.speak(utterance) // 定型句

@@ -26,7 +26,7 @@ struct phraseView: View {
     @State var scanstart:Int = 0
     @State var scanStatus = ["スキャン\n\nスタート","決定"]
     @State var onsei:Int = 0    //button text配列の数0,1,2スキャン音", "読み上げ\n\n効果音", "読み上げ\n\n音声なし
-    private let buttonTexts = ["スキャン音", "読み上げ\n\n効果音", "読み上げ\n\n音声なし"]
+    private let buttonTexts = ["スキャン音\n\n音声", "スキャン音\n\n効果音", "スキャン音\n\n音声なし"]
     
     @State var scanNum:Int=0
     private let scanTexts = ["スキャン範囲\n\n全ボタン","スキャン範囲\n定型句\nのみ"]
@@ -385,8 +385,6 @@ struct phraseView: View {
             if(isTextFile(fileURL:fileURL)==true){
                 do{
                     print(fileName)
-                    
-                    
                     //print("File Contents:", String(data: fileContents, encoding: .utf8) ?? "Unable to convert data to string")
                     
                     let mytextArray = self.readFromFile_Da(savename: fileName)
@@ -396,7 +394,7 @@ struct phraseView: View {
                     utterance.rate = 0.5
                     utterance.volume = playvol
                     synthesiser.speak(utterance)
-                    print("Text file found")
+                    print("テキストファイル")
                 }
             }else{
                 //録音ファイルが存在する場合
@@ -404,6 +402,7 @@ struct phraseView: View {
                 do {
                     audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
                     audioPlayer?.play()
+                    print("録音ファイル")
                 } catch {
                     print("ファイルを再生できませんでした")
                 }
@@ -426,12 +425,12 @@ struct phraseView: View {
         }
         .keyboardShortcut(shortcut, modifiers: [])
     }
-
+//画面より選択した場合のボタンの設定
     func createButton(index: Int) -> some View {
         Button(action: {
-            appendToFile(text:phraseSet2[index])
-            playaudio(fileName: "\(phraseSet2[index])")
-            theText+=(" "+phraseSet2[index])
+            appendToFile(text:phraseSet2[index])                //ログに入力
+            playaudio(fileName: "\(phraseSet2[index])")         //録音又は合成音声か判別し、再生する
+            theText+=(" "+phraseSet2[index])                    //テキストフィールドに入力
         }) {
             if (index < phraseSet2.count) {
                 Text("\(phraseSet2[index])")
@@ -484,17 +483,12 @@ struct phraseView: View {
             } else {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
-                    let utterance = AVSpeechUtterance(string: theText)
-                    utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                    utterance.rate = 0.5
-                    
-                    utterance.volume = playvol
-                    let synthesiser = AVSpeechSynthesizer()
-                    synthesiser.speak(utterance)
+                    playtext(text: theText)
                 } else if (scan.count > 0 && scan.count < 19) {
                     theText += "\(phraseSet2[scan.count - 1]) "
-                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 1]))
-                    synthesiser.speak(utterance)
+//                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 1]))
+//                    synthesiser.speak(utterance)
+                    playaudio(fileName: phraseSet2[scan.count - 1])
                 } else if (scan.count > 25 && scan.count < 44) {
                     theText += "\(phraseSet2[scan.count - 26])"
                     let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 26]))
