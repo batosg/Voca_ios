@@ -48,6 +48,7 @@ struct phraseView: View {
                             onsei = (onsei + 1) % buttonTexts.count
                             if (scan.waiting==true){
                                 print("change")
+                                
                             }
                             
                             
@@ -324,34 +325,45 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")//配列を代入
         }
     }
-    func getCurrentDate(text:String) -> String {
+    func getCurrentDate(text: String) -> String {
         let dateFormatter = DateFormatter()
-        
         dateFormatter.locale = Locale(identifier: "ja_JP")
-        dateFormatter.dateFormat = "yyyy年 MM月 d日 h:mm a '\(text)'\n"
-        return dateFormatter.string(from: Date())
+        dateFormatter.dateFormat = "yyyy年 MM月 d日"  // Updated date format
+
+        return dateFormatter.string(from: Date()) + "   " + text
     }
-    func appendToFile(text:String) {
+
+    func appendToFile(text: String) {
         let fileName = "logdata.txt"
-        
+
         // Get the file URL
         if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = documentDirectory.appendingPathComponent(fileName)
-            
+
             do {
-                // Read existing content
-                var existingContent = try String(contentsOf: fileURL)
-                
-                // Append new text
-                existingContent += getCurrentDate(text: text)
-                
-                // Write modified content back to the file
-                try existingContent.write(to: fileURL, atomically: false, encoding: .utf8)
+                // Read existing logs
+                let existingLogs = try String(contentsOf: fileURL, encoding: .utf8)
+
+                var newLogText = getCurrentDate(text: text)
+                var suffix = 1
+
+                // Check if the exact log text already exists
+                while existingLogs.contains(newLogText) {
+                    suffix += 1
+                    newLogText = getCurrentDate(text: text + " (\(suffix))")
+                }
+
+                // Append the new log text to the file
+                let updatedContent = existingLogs.isEmpty ? newLogText : "\(existingLogs)\n\(newLogText)"
+                try updatedContent.write(to: fileURL, atomically: true, encoding: .utf8)
+
             } catch {
                 print("Error appending to file: \(error)")
             }
         }
     }
+
+
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -374,11 +386,7 @@ struct phraseView: View {
         //録音ファイルまたはテキストファイルが存在しない場合は読み上げ
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
-                let utterance = AVSpeechUtterance(string: fileName)
-                utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-                utterance.rate = 0.5
-                utterance.volume = playvol
-                synthesiser.speak(utterance)
+                playtext(text: fileName)
             }
             //テキストファイルが存在する場合
         } else {

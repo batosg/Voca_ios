@@ -7,12 +7,14 @@
 import SwiftUI
 
 struct LogView: View {
-    @State private var fileContent: String = ""
+    @State private var fileContent: [String] = []
+    @State private var selectedDate: Date = Date()
     @State private var isShowingDialog = false
     @State private var showingAlert = false
     @Binding var screen: String
     
     var body: some View {
+        
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255)
                 .ignoresSafeArea()
@@ -31,6 +33,7 @@ struct LogView: View {
                             .border(Color.black)
                     }.confirmationDialog("注意！",isPresented: $isShowingDialog) {
                         Button("削除する",role:.destructive){
+//                            
                             writingToFile_Da(savedata: [""], savename: "logdata.txt")
                             screen="option"
                             showingAlert=true
@@ -68,28 +71,43 @@ struct LogView: View {
                 .padding()
                 
                 Text("ログ記録")
-                    .font(.largeTitle)
-                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                    .padding(.top, 20)
-                
+                                .font(.largeTitle)
+                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                .padding(.top, 20)
+
+                            DatePicker(
+                                "日付を選択してください",
+                                selection: $selectedDate,
+                                displayedComponents: [.date]
+                            )
+                            .padding()
+                            .environment(\.locale, Locale(identifier: "ja_JP"))
+
                 ScrollView {
-                    if (fileContent.isEmpty ||  fileContent == "[\"\"]"){
-                        Text("ログ記録はありません")
-                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
-                            .padding()
-                            .frame(minWidth: UIScreen.main.bounds.width * 0.8) // Set a default width
+                    if let logsForSelectedDate = logsForDate(selectedDate) {
+                        if logsForSelectedDate.isEmpty {
+                            Text("選択した日のログ記録はございません")
+                                .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                .padding()
+                                .frame(minWidth: UIScreen.main.bounds.width * 0.8)
+                        } else {
+                            ForEach(logsForSelectedDate, id: \.self) { log in
+                                Text(log)
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                                    .padding()
+                                    .frame(minWidth: UIScreen.main.bounds.width * 0.8, alignment: .leading)
+                            }
+                        }
                     } else {
-                        Text(fileContent)
-                            .font(.system(size: 24, weight: .bold)) // Set the font size to 24 or adjust as needed
-                            .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
+                        Text("ログ記録はございません")
+                            .foregroundColor(Color.red)
                             .padding()
-                            .frame(minWidth: UIScreen.main.bounds.width * 0.8, alignment: .leading) // Set a default width with left alignment
                     }
-                    
-                    
                 }
                 .onAppear {
                     readTextFile()
+                   
                 }
                 .background(Color.white)
                 .cornerRadius(10)
@@ -99,7 +117,30 @@ struct LogView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    
+    func logsForDate(_ date: Date) -> [String]? {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "yyyy年 MM月 d日"
+
+        let formattedDate = formatter.string(from: date)
+
+        let logsForSelectedDate = fileContent.filter { logEntry in
+            if let index = logEntry.range(of: formattedDate) {
+                // Extract the date portion and ignore the characters after it
+                let dateString = logEntry[..<index.upperBound]
+                return dateString.trimmingCharacters(in: .whitespaces) == formattedDate
+            }
+            return false
+        }
+
+        if logsForSelectedDate.isEmpty {
+            return nil
+        } else {
+            return logsForSelectedDate
+        }
+    }
+
+
     func writingToFile_Da(savedata: [String], savename: String) {
         // DocumentsフォルダURL取得
         guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
@@ -118,15 +159,16 @@ struct LogView: View {
     }
     func readTextFile() {
         let fileName = "logdata.txt"
-        if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileURL = documentDirectory.appendingPathComponent(fileName)
-            do {
-                // Read file content
-                fileContent = try String(contentsOf: fileURL, encoding: .utf8)
-            } catch {
-                print("Error reading file: \(error)")
-            }
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+
+        do {
+            // Read the file content as an array of strings
+            fileContent = try String(contentsOf: fileURL, encoding: .utf8).components(separatedBy: "\n").filter { !$0.isEmpty }
+        } catch {
+            print("読み込みエラー: \(error)")
         }
     }
+
 }
 
