@@ -188,7 +188,7 @@ struct Panel2: View {
                             print("cancel")
                         }
                     }message: {
-                        Text("全てのログデータが初期化すると戻せません")
+                        Text("全てのデータが初期化されるので戻せません")
                     }
                     
                     .buttonStyle(BorderlessButtonStyle())

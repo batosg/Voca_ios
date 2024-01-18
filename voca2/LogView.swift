@@ -138,7 +138,7 @@ struct LogView: View {
         } else {
             return logsForSelectedDate
         }
-    }
+    } 
 
 
     func writingToFile_Da(savedata: [String], savename: String) {

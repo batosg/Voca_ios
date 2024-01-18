@@ -362,7 +362,7 @@ struct phraseView: View {
             }
         }
     }
-
+動作遅い
 
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -492,15 +492,19 @@ struct phraseView: View {
                 // オートスキャンによるボタン選択
                 if (scan.count == 0 || scan.count == 25) {
                     playtext(text: theText)
+                    
                 } else if (scan.count > 0 && scan.count < 19) {
                     theText += "\(phraseSet2[scan.count - 1]) "
 //                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 1]))
 //                    synthesiser.speak(utterance)
+                    appendToFile(text: phraseSet2[scan.count - 1])
                     playaudio(fileName: phraseSet2[scan.count - 1])
                 } else if (scan.count > 25 && scan.count < 44) {
                     theText += "\(phraseSet2[scan.count - 26])"
-                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 26]))
-                    synthesiser.speak(utterance)
+                    appendToFile(text: phraseSet2[scan.count - 26])
+                    playaudio(fileName: phraseSet2[scan.count - 26])
+//                    let utterance = AVSpeechUtterance(string: (phraseSet2[scan.count - 26]))
+//                    synthesiser.speak(utterance)
                 } else if (scan.count == 19 || scan.count == 44) {
                     theText = ""
                 } else if (scan.count == 20 || scan.count == 45) {
