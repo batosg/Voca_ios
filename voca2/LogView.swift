@@ -5,7 +5,7 @@
 //  Created by BATORGIL on 2023/10/16.
 //
 import SwiftUI
-
+import UniformTypeIdentifiers
 struct LogView: View {
     @State private var fileContent: [String] = []
     @State private var selectedDate: Date = Date()
@@ -33,7 +33,7 @@ struct LogView: View {
                             .border(Color.black)
                     }.confirmationDialog("注意！",isPresented: $isShowingDialog) {
                         Button("削除する",role:.destructive){
-//                            
+                            //
                             writingToFile_Da(savedata: [""], savename: "logdata.txt")
                             screen="option"
                             showingAlert=true
@@ -55,21 +55,33 @@ struct LogView: View {
                     .buttonStyle(BorderlessButtonStyle())
                     
                     Spacer()
+                    VStack{
+                        Button(action: {
+                            exportLog()
+                        }) {
+                            Label("シェア", systemImage: "square.and.arrow.up")
+                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                                .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                .border(Color.black)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
                     
-                    Button(action: {
-                        screen = "option"
-                    }) {
-                        Label("戻る", systemImage: "arrowshape.turn.up.backward")
-                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
+                        Button(action: {
+                            screen = "option"
+                        }) {
+                            Label("戻る", systemImage: "arrowshape.turn.up.backward")
+                                .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                                .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                .border(Color.black)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
-                    .buttonStyle(BorderlessButtonStyle())
+                    .padding()
                 }
-                .padding()
-                
                 Text("ログ記録")
                                 .font(.largeTitle)
                                 .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
@@ -157,6 +169,35 @@ struct LogView: View {
             print("Error: \(error)")
         }
     }
+    func exportLog() {
+        // Customize the file name for sharing
+        let fileName = "logdata_export.txt"
+
+        // Create a temporary URL to store the log file
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            // Join the array of log entries into a single string
+            let logTextContent = fileContent.joined(separator: "\n")
+
+            // Write the log text to the temporary file
+            try logTextContent.write(to: tempURL, atomically: true, encoding: .utf8)
+
+            // Create a document interaction controller to share the file
+            let interactionController = UIDocumentInteractionController(url: tempURL)
+
+            // Present the share sheet
+            if !interactionController.presentOptionsMenu(from: .zero, in: UIApplication.shared.windows.first?.rootViewController?.view ?? UIView(), animated: true) {
+                // Failed to present share sheet
+                print("Error presenting share sheet.")
+            }
+
+        } catch {
+            // Handle export error
+            print("Error exporting log: \(error.localizedDescription)")
+        }
+    }
+
     func readTextFile() {
         let fileName = "logdata.txt"
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!

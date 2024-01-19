@@ -362,7 +362,6 @@ struct phraseView: View {
             }
         }
     }
-動作遅い
 
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
