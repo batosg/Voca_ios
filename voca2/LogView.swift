@@ -12,7 +12,7 @@ struct LogView: View {
     @State private var isShowingDialog = false
     @State private var showingAlert = false
     @Binding var screen: String
-    
+    //cr lf 
     var body: some View {
         
         ZStack {

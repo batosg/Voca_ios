@@ -25,7 +25,7 @@ struct recordView: View {
     @Binding var phraseSet8: [String]
     // scanTimerのインスタンスを作り観測する
     @ObservedObject var scan = scanTimer()
-    
+    @State private var read: String = ""
     @State private var phrase = ""
     @State private var readphr = ""
     let pick = ["録音", "合成音声"]
@@ -61,10 +61,10 @@ struct recordView: View {
                 var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
                 if panel>=0 && panel<phraseSet.count{
                     createText(phraseSet: phraseSet[panel], arrnum: arrnum)
+                    textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
                 }
                 
-                
-                TextField("表示文字列を入力", text: $phrase)
+                TextField("表示文字列:\(phraseSet[panel][arrnum])", text: $phrase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom)
                     .font(.system(size: 50))
@@ -85,7 +85,7 @@ struct recordView: View {
                     .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                     .border(Color.black)
 
-                    TextField("読み上げ用テキスト", text: $readphr)
+                    TextField("読み上げ文字列\(read)", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .font(.system(size: 50))
@@ -241,6 +241,54 @@ struct recordView: View {
             }
         }
     }
+    func isTextFile(fileURL: URL) -> Bool {
+        do {
+            let fileContent = try String(contentsOf: fileURL)
+            //完成すればテキストファイル
+            return true
+        } catch {
+            //失敗すればテキストファイルではない
+            return false
+        }
+    }
+    func textOrAudio(phraseSet: [String], arrnum: Int) {
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("ファイルが見つかりませんでした")
+            return
+        }
+        let fileName = "\(phraseSet[arrnum])"
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+        //録音ファイルまたはテキストファイルが存在しない場合は読み上げ
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                read=phraseSet[arrnum]
+            }
+            //テキストファイルが存在する場合
+        } else {
+            if(isTextFile(fileURL:fileURL)==true){
+                do{
+                    print(fileName)
+                    //print("File Contents:", String(data: fileContents, encoding: .utf8) ?? "Unable to convert data to string")
+                    
+                    let mytextArray = self.readFromFile_Da(savename: fileName)
+                    let mytext = mytextArray.joined(separator: "") //配列をStringに変換
+                    read=mytext
+                    print("テキストファイル")
+                }
+            }else{
+                //録音ファイルが存在する場合
+                
+                do {
+                    audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+                    audioPlayer?.play()
+                    read="録音ファイル"
+                    print("録音ファイル")
+                } catch {
+                    print("ファイルを再生できませんでした")
+                }
+            }
+        }
+    }
     
     // ファイル書き込み（Data）=============================================================
     func writingToFile_Da(savedata: [String], savename: String) {
@@ -261,6 +309,8 @@ struct recordView: View {
     }
     // =================================================================================
     func createText(phraseSet: [String], arrnum: Int) -> some View {
+        
+//        text=phraseSet[arrnum]
         return Text("\(phraseSet[arrnum])")
             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
             .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
