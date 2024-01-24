@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import AVFoundation
-
+import UIKit
 
 // 設定画面
 //Panel 0
@@ -33,7 +33,7 @@ struct optionView: View {
         
         ZStack {
             Color(red: 191/255, green: 228/255, blue: 255/255).ignoresSafeArea()
-            
+            let resultColor = colortextOrAudio(phraseSet: phraseSet1, arrnum: 0, defaultColor: .white)
             HStack {
                 
                 VStack {
@@ -84,7 +84,7 @@ struct optionView: View {
                                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .bold))
                                             .foregroundColor(Color(red: 0, green: 65/255, blue: 255/255))
                                             .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)
-                                            .background(Color.white)
+                                            .background(Color(resultColor))
                                             .border(Color.black)
                                     }
                                 }
@@ -171,8 +171,20 @@ struct optionView: View {
                             .background(Color(red: 200/255, green: 200/255, blue: 203/255))
                             .border(Color.black)
                     }
+                    
                     // 設定を初期化するボタン
-                   
+                    Button(action: {
+                        
+                        print(resultColor)
+                        
+                    }) {
+                        Text("data")
+                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                            .border(Color.black)
+                    }
                     Button(action: {
                         print("初期化")
                         isShowingDialog=true
@@ -227,6 +239,50 @@ struct optionView: View {
             }
         }.onAppear(){
             phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
+        }
+    }
+    func colortextOrAudio(phraseSet: [String], arrnum: Int, defaultColor: UIColor) -> UIColor {
+        var color: UIColor = defaultColor
+
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            print("ファイルが見つかりませんでした")
+            return color
+        }
+
+        let fileName = "\(phraseSet[arrnum])"
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+
+        // 録音ファイルまたはテキストファイルが存在しない場合は読み上げ
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            // No file exists, set color to default
+            color = defaultColor
+        } else {
+            // テキストファイルが存在する場合
+            if isTextFile(fileURL: fileURL) {
+                // Set color to green
+                color = .green
+            } else {
+                // 録音ファイルが存在する場合
+                do {
+                    // Set color to red
+                    color = .red
+                    // Add additional code if needed for audio playback
+                } catch {
+                    print("ファイルを再生できませんでした")
+                }
+            }
+        }
+
+        return color
+    }
+    func isTextFile(fileURL: URL) -> Bool {
+        do {
+            let fileContent = try String(contentsOf: fileURL)
+            //完成すればテキストファイル
+            return true
+        } catch {
+            //失敗すればテキストファイルではない
+            return false
         }
     }
     //ファイルを存在しているか確認し、なかったい場合には作成する

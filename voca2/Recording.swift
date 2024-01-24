@@ -61,7 +61,7 @@ struct recordView: View {
                 var phraseSet: [[String]] = [phraseSet1, phraseSet6, phraseSet7, phraseSet8]
                 if panel>=0 && panel<phraseSet.count{
                     createText(phraseSet: phraseSet[panel], arrnum: arrnum)
-                    textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
+                    
                 }
                 
                 TextField("表示文字列:\(phraseSet[panel][arrnum])", text: $phrase)
@@ -215,6 +215,11 @@ struct recordView: View {
                     //                            .border(Color.black)
                     //                    }
                     //
+                    Button("Play Text or Audio") {
+                        textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
+                        // 'read' will be updated here based on the logic inside the function
+                    }
+
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る
                     Button(action: {
@@ -239,6 +244,7 @@ struct recordView: View {
                 }
                 Spacer()
             }
+        
         }
     }
     func isTextFile(fileURL: URL) -> Bool {
