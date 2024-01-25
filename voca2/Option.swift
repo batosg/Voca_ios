@@ -267,9 +267,7 @@ struct optionView: View {
                     // Set color to red
                     color = .red
                     // Add additional code if needed for audio playback
-                } catch {
-                    print("ファイルを再生できませんでした")
-                }
+                } 
             }
         }
 
