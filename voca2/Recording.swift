@@ -74,18 +74,28 @@ struct recordView: View {
                 
                 
                 
-                if(selection == 1){
-                    Button("テキストを移す") {
-                        // Copy text from the first field to the second field
-                        readphr=phrase
+                    if(selection == 1){
+                        HStack{
+                        Button("テキストを移す") {
+                            // Copy text from the first field to the second field
+                            readphr=phrase
+                        }
+                        .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                        .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                        .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                        .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                        .border(Color.black)
+                        Button("読み上げ用テキスト表示")
+                            {
+                            textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
+                            // 'read' will be updated here based on the logic inside the function
+                        }.font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+                                .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+                                .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+                                .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+                                .border(Color.black)
                     }
-                    .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                    .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                    .frame(width: UIScreen.main.bounds.width * 0.62, height: UIScreen.main.bounds.height * 0.075)
-                    .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                    .border(Color.black)
-
-                    TextField("読み上げ文字列\(read)", text: $readphr)
+                    TextField("読み上げ文字列:\(read)", text: $readphr)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .font(.system(size: 50))
@@ -215,10 +225,7 @@ struct recordView: View {
                     //                            .border(Color.black)
                     //                    }
                     //
-                    Button("Play Text or Audio") {
-                        textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
-                        // 'read' will be updated here based on the logic inside the function
-                    }
+                    
 
                     // 設定画面に遷移するボタン
                     //最後に入った画面に応じて戻る

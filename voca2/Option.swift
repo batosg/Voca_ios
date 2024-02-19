@@ -178,7 +178,7 @@ struct optionView: View {
                         print(resultColor)
                         
                     }) {
-                        Text("data")
+                        Text("データ")
                             .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                             .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
                             .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)

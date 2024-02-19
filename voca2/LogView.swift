@@ -59,7 +59,7 @@ struct LogView: View {
                         Button(action: {
                             exportLog()
                         }) {
-                            Label("シェア", systemImage: "square.and.arrow.up")
+                            Label("共有", systemImage: "square.and.arrow.up")
                                 .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                                 .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
                                 .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
