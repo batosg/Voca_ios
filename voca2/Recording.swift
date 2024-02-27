@@ -77,7 +77,7 @@ struct recordView: View {
                     if(selection == 1){
                         HStack{
                         Button("テキストを移す") {
-                            // Copy text from the first field to the second field
+                            // テキストを移す
                             readphr=phrase
                         }
                         .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
@@ -88,7 +88,6 @@ struct recordView: View {
                         Button("読み上げ用テキスト表示")
                             {
                             textOrAudio(phraseSet: phraseSet[panel], arrnum: arrnum)
-                            // 'read' will be updated here based on the logic inside the function
                         }.font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
                                 .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
                                 .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
@@ -173,18 +172,13 @@ struct recordView: View {
                             showingAlert = true
                         }
                         else{
-                            // Ensure panel is within valid range
                             if panel >= 0 && panel < phraseSet.count {
-                                // Update the specified phraseSet array
                                 phraseSet[panel][arrnum] = phrase
                                 
-                                // Define the filename based on the panel
                                 let filename = "ps\(panel).dat"
                                 
-                                // Write to file
                                 writingToFile_Da(savedata: phraseSet[panel], savename: filename)
                                 
-                                // Read from file and update the corresponding phraseSet array
                                 phraseSet[panel] = readFromFile_Da(savename: filename)
                             }
                         }

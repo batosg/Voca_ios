@@ -325,6 +325,7 @@ struct phraseView: View {
             phraseSet2 = self.readFromFile_Da(savename: "phrarray.dat")//配列を代入
         }
     }
+    //現在の年月日のデータ
     func getCurrentDate(text: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ja_JP")
@@ -332,7 +333,7 @@ struct phraseView: View {
 
         return dateFormatter.string(from: Date()) + "   " + text
     }
-
+    //ログのデータに追加する
     func appendToFile(text: String) {
         let fileName = "logdata.txt"
 
@@ -362,12 +363,13 @@ struct phraseView: View {
             }
         }
     }
-
+    //URLの獲得
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
+    //テキストを合成音声での読み上げ
     func playtext(text: String){
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
@@ -375,6 +377,7 @@ struct phraseView: View {
         utterance.volume = playvol
         synthesiser.speak(utterance)
     }
+    //ファイルをチェックして、読み上げまたは再生
     func playaudio(fileName: String) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("ファイルが見つかりませんでした")
@@ -416,7 +419,7 @@ struct phraseView: View {
             }
         }
     }
-    
+    //スキャンボタン
     private func createScanButton(shortcut: KeyEquivalent) -> some View {
         return Button(action: {
             scanstart = (scanstart + 1) % scanStatus.count
@@ -451,6 +454,7 @@ struct phraseView: View {
             }
         }
     }
+    //テキストファイルか確認
     func isTextFile(fileURL: URL) -> Bool {
         do {
             let fileContent = try String(contentsOf: fileURL)
@@ -481,7 +485,7 @@ struct phraseView: View {
             return []  // Return an empty array or handle the error accordingly
         }
     }
-
+    
     func phraseScanAction() {
         if (screen == "phrase") {
             if scan.waiting {

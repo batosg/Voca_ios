@@ -38,7 +38,7 @@ struct optionView: View {
                 
                 VStack {
                     HStack{
-                        
+                        //パネル画面遷移
                         ForEach(0..<4) { index in
                             Button(action: {
                                 if(index==1){
@@ -64,6 +64,7 @@ struct optionView: View {
                     Spacer().frame(height:200)
                     HStack{
                         VStack{
+                            //スペースを開けるための空白ボタン「機能はない」
                             Button(action: {
                                 print("スペース")
                             }) {
@@ -72,6 +73,7 @@ struct optionView: View {
                                     .foregroundColor(Color.white)
                                     .frame(width: UIScreen.main.bounds.width * 0.15, height: UIScreen.main.bounds.height * 0.075)                 .background(Color(red: 191/255, green: 228/255, blue: 255/255))
                             }
+                            
                             ForEach(0..<4) { index in
                                 Button(action: {
                                     print("\(phraseSet1[index]) ")
@@ -147,6 +149,7 @@ struct optionView: View {
                                     }
                                 }
                             }
+                            //スペースを開けるための空白ボタン「機能はない」
                             Button(action: {
                                 print("スペース")
                             }) {
@@ -159,7 +162,7 @@ struct optionView: View {
                     }
                 }
                 VStack{
-                    
+                    //ログボタン
                     Button(action: {
                         screen="logview"
                         
@@ -172,19 +175,20 @@ struct optionView: View {
                             .border(Color.black)
                     }
                     
+                    //パネルのファイルの種類によって色が変わる「未完成」
+//                    Button(action: {
+//                        
+//                        print(resultColor)
+//                        
+//                    }) {
+//                        Text("データ")
+//                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
+//                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
+//                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
+//                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
+//                            .border(Color.black)
+//                    }
                     // 設定を初期化するボタン
-                    Button(action: {
-                        
-                        print(resultColor)
-                        
-                    }) {
-                        Text("データ")
-                            .font(.system(size: UIScreen.main.bounds.width * 0.025, weight: .black))
-                            .foregroundColor(Color(red: 0, green:65/255, blue: 255/255))
-                            .frame(width: UIScreen.main.bounds.width * 0.30, height: UIScreen.main.bounds.height * 0.075)
-                            .background(Color(red: 200/255, green: 200/255, blue: 203/255))
-                            .border(Color.black)
-                    }
                     Button(action: {
                         print("初期化")
                         isShowingDialog=true
@@ -241,6 +245,9 @@ struct optionView: View {
             phraseSet1 = self.readFromFile_Da(savename: "ps0.dat")
         }
     }
+    
+    //パネルのファイルの種類によって色が変わる「未完成」
+    //帰値をなんとなくわかれば完成できると思う
     func colortextOrAudio(phraseSet: [String], arrnum: Int, defaultColor: UIColor) -> UIColor {
         var color: UIColor = defaultColor
 
@@ -266,13 +273,13 @@ struct optionView: View {
                 do {
                     // Set color to red
                     color = .red
-                    // Add additional code if needed for audio playback
                 } 
             }
         }
 
         return color
     }
+    //テキストファイルか確認
     func isTextFile(fileURL: URL) -> Bool {
         do {
             let fileContent = try String(contentsOf: fileURL)
@@ -305,6 +312,7 @@ struct optionView: View {
             print("\(fileName) already exists")
         }
     }
+    //初期化
     func ResetAllFiles() {
         let fileManager = FileManager.default
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -330,11 +338,12 @@ struct optionView: View {
         checkAndCreateFile(fileName: "logdata.txt",initialContent:[])
     
     }
+    //書き込み
     func overwriteFile(from sourceURL: URL, to destinationURL: URL) {
         do {
             let sourceData = try Data(contentsOf: sourceURL)
             try sourceData.write(to: destinationURL, options: .atomic)
-            print("File overwritten successfully.")
+            print("書き込み未完成")
         } catch {
             print("Error: \(error.localizedDescription)")
         }

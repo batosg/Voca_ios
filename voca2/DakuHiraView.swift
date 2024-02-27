@@ -2,7 +2,7 @@
 //  DakuHiraView.swift
 //  voca2
 //
-//  Created by 髙橋大 on 2022/06/29.
+//  Created by GANBAT BATORGIL on 2023/04/06.
 //
 
 import Foundation

@@ -53,6 +53,7 @@
 		0DAEAADB29F1185400CF7329 /* Panel2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel2.swift; sourceTree = "<group>"; };
 		0DAEAADD29F1195500CF7329 /* Panel3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel3.swift; sourceTree = "<group>"; };
 		0DBE6E572ADCD11700713B54 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		0DD3D23C2B8DF44B00AEB5A6 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		DC8EB66627FD6469009E2D67 /* voca2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voca2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8EB66927FD6469009E2D67 /* voca2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = voca2App.swift; sourceTree = "<group>"; };
 		DC8EB66B27FD6469009E2D67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 		DC8EB65D27FD6469009E2D67 = {
 			isa = PBXGroup;
 			children = (
+				0DD3D23C2B8DF44B00AEB5A6 /* Header.h */,
 				DC8EB66827FD6469009E2D67 /* voca2 */,
 				DC8EB67927FD646A009E2D67 /* voca2Tests */,
 				DC8EB68327FD646A009E2D67 /* voca2UITests */,

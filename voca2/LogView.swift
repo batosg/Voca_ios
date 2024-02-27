@@ -21,6 +21,7 @@ struct LogView: View {
             
             VStack {
                 HStack {
+                    //ログ初期化
                     Button(action: {
                         isShowingDialog=true
                         
@@ -56,6 +57,7 @@ struct LogView: View {
                     
                     Spacer()
                     VStack{
+                        //ログ書き込み
                         Button(action: {
                             exportLog()
                         }) {
@@ -128,7 +130,7 @@ struct LogView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+    //正しいフォーマットに書き込む
     func logsForDate(_ date: Date) -> [String]? {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ja_JP")
@@ -169,32 +171,24 @@ struct LogView: View {
             print("Error: \(error)")
         }
     }
+    //ログ書き込み
     func exportLog() {
-        // Customize the file name for sharing
         let fileName = "logdata_export.txt"
 
-        // Create a temporary URL to store the log file
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
 
         do {
-            // Join the array of log entries into a single string
             let logTextContent = fileContent.joined(separator: "\n")
 
-            // Write the log text to the temporary file
             try logTextContent.write(to: tempURL, atomically: true, encoding: .utf8)
 
-            // Create a document interaction controller to share the file
             let interactionController = UIDocumentInteractionController(url: tempURL)
 
-            // Present the share sheet
             if !interactionController.presentOptionsMenu(from: .zero, in: UIApplication.shared.windows.first?.rootViewController?.view ?? UIView(), animated: true) {
-                // Failed to present share sheet
-                print("Error presenting share sheet.")
             }
 
         } catch {
-            // Handle export error
-            print("Error exporting log: \(error.localizedDescription)")
+            print("書き込みエラー: \(error.localizedDescription)")
         }
     }
 
